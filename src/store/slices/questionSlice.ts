@@ -9,16 +9,17 @@ type InputType =
   | 'shortAnswer'
   | 'longAnswer';
 
-interface IContentsArray {
+export interface IContents {
   id: string;
   text: string;
+  isEtc?: boolean;
 }
 
 export interface IQuestion {
   id: string;
   title: string;
   inputType: InputType;
-  contents: string | IContentsArray[];
+  contents: string | IContents[];
   isFocused: boolean;
   isRequired: boolean;
 }
@@ -27,7 +28,7 @@ interface IAction {
   type: string;
   payload: {
     id: string;
-    contents: string | IContentsArray[];
+    contents: string | IContents[];
   };
 }
 
@@ -123,10 +124,19 @@ const questionSlice = createSlice({
         }
       });
     },
+    addInputItem: (state: IQuestion[], action) => {
+      const contents = state.find(
+        (question) => question.id === action.payload.id
+      )?.contents as IContents[];
+      contents.push({
+        id: action.payload.contentId,
+        text: action.payload.text,
+      });
+    },
   },
 });
 
-export const { setTitle, setContents, setInputType, setFocused } =
+export const { setTitle, setContents, setInputType, setFocused, addInputItem } =
   questionSlice.actions;
 
 export default questionSlice.reducer;

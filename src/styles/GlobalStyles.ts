@@ -3,7 +3,12 @@ import { reset } from 'styled-reset';
 
 export const GlobalStyles = styled.createGlobalStyle`
   ${reset}
+
   * {
     box-sizing: border-box;
+  }
+
+  body {
+    background-color: ${({ theme }) => theme.colors.background};
   }
 `;

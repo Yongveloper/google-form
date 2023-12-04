@@ -25,7 +25,7 @@ function FormContainer({ id, children }: IFormContainerProps) {
   const dispatch = useAppDispatch();
 
   const isFocused = useAppSelector(
-    (state) => state.question.find((q) => q.id === id)?.isFocused
+    (state) => state.question.find((question) => question.id === id)?.isFocused
   );
 
   const handleFocus = () => {

@@ -47,12 +47,8 @@ const initialState: IQuestion[] = [
     inputType: 'radio',
     contents: [
       {
-        id: '2',
+        id: String(Date.now()),
         text: '옵션 1',
-      },
-      {
-        id: '3',
-        text: '옵션 2',
       },
     ],
     isFocused: false,
@@ -100,20 +96,30 @@ const questionSlice = createSlice({
       const targetIndex = state.findIndex(
         (question) => question.id === action.payload.id
       );
-      state[targetIndex].inputType = action.payload.contents as InputType;
       if (
         action.payload.contents === 'shortAnswer' ||
         action.payload.contents === 'longAnswer'
       ) {
         state[targetIndex].contents = '';
-      } else {
-        state[targetIndex].contents = [
-          {
-            id: String(Number(action.payload.id) + 1),
-            text: '옵션 1',
-          },
-        ];
       }
+      if (
+        state[targetIndex].inputType === 'shortAnswer' ||
+        state[targetIndex].inputType === 'longAnswer'
+      ) {
+        if (
+          action.payload.contents === 'radio' ||
+          action.payload.contents === 'checkbox' ||
+          action.payload.contents === 'dropdown'
+        ) {
+          state[targetIndex].contents = [
+            {
+              id: String(Date.now()),
+              text: '옵션 1',
+            },
+          ];
+        }
+      }
+      state[targetIndex].inputType = action.payload.contents as InputType;
     },
     setFocused: (state: IQuestion[], action) => {
       state.forEach((question) => {

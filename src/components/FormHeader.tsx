@@ -17,8 +17,14 @@ const PurpleLine = styled.div`
 
 function FormHeader() {
   const dispatch = useAppDispatch();
-  const header = useAppSelector((state) =>
-    state.question.find((q) => q.id === 'title')
+
+  const title = useAppSelector(
+    (state) => state.question.find((question) => question.id === 'title')?.title
+  );
+
+  const contents = useAppSelector(
+    (state) =>
+      state.question.find((question) => question.id === 'title')?.contents
   );
 
   const handleTitle = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -39,7 +45,7 @@ function FormHeader() {
         type="search"
         variant="standard"
         placeholder="설문지 제목"
-        value={header?.title}
+        value={title}
         onChange={handleTitle}
       />
       <STextField
@@ -48,7 +54,7 @@ function FormHeader() {
         type="search"
         variant="standard"
         placeholder="설문지 설명"
-        value={header?.contents}
+        value={contents}
         onChange={handleDescription}
       />
     </FormContainer>

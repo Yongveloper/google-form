@@ -24,19 +24,6 @@ const TopContainer = styled.div`
 `;
 
 const ContentsContainer = styled.div`
-  .input__default {
-    padding: 10px;
-    color: ${({ theme }) => theme.colors.lightGrey};
-    border-bottom: 1px solid ${({ theme }) => theme.colors.grey};
-  }
-
-  .short-textfield {
-    width: 30%;
-  }
-  .long-textfield {
-    width: 50%;
-  }
-
   .input-items {
     height: 48px;
     display: flex;
@@ -134,10 +121,24 @@ function QuestionForm({ id }: IQuestionFormProps) {
         </TopContainer>
         <ContentsContainer>
           {inputType === 'shortAnswer' && (
-            <div className="input__default short-textfield">단문형 텍스트</div>
+            <STextField
+              sx={{ width: '30%' }}
+              id="standard-search"
+              type="search"
+              variant="standard"
+              defaultValue="단답형 텍스트"
+              disabled={true}
+            />
           )}
           {inputType === 'longAnswer' && (
-            <div className="input__default long-textfield">장문형 텍스트</div>
+            <STextField
+              sx={{ width: '50%' }}
+              id="standard-search"
+              type="search"
+              variant="standard"
+              defaultValue="장문형 텍스트"
+              disabled={true}
+            />
           )}
           {Array.isArray(contents) &&
             contents.map((content, index) => (
@@ -145,28 +146,42 @@ function QuestionForm({ id }: IQuestionFormProps) {
                 {inputType === 'radio' && <RadioButtonUncheckedIcon />}
                 {inputType === 'checkbox' && <CropSquareIcon />}
                 {inputType === 'dropdown' && <span>{index + 1}</span>}
-
-                <span>{content.text}</span>
+                <STextField
+                  id="standard-basic"
+                  type="text"
+                  variant="standard"
+                  value={content.text}
+                  onChange={handleTitle}
+                />
               </div>
             ))}
-          {isFocused && (
-            <AddItemBtnWrapper>
-              {
-                {
-                  radio: <RadioButtonUncheckedIcon />,
-                  checkbox: <CropSquareIcon />,
-                  dropdown: (
-                    <span>
-                      {Array.isArray(contents) && contents.length + 1}
-                    </span>
-                  ),
-                }[inputType]
-              }
-              <span className="AddItemBtn" onClick={handleAddInputItem}>
-                옵션 추가
-              </span>
-            </AddItemBtnWrapper>
-          )}
+          {isFocused &&
+            {
+              radio: (
+                <AddItemBtnWrapper>
+                  <RadioButtonUncheckedIcon />
+                  <span className="AddItemBtn" onClick={handleAddInputItem}>
+                    옵션 추가
+                  </span>
+                </AddItemBtnWrapper>
+              ),
+              checkbox: (
+                <AddItemBtnWrapper>
+                  <CropSquareIcon />
+                  <span className="AddItemBtn" onClick={handleAddInputItem}>
+                    옵션 추가
+                  </span>
+                </AddItemBtnWrapper>
+              ),
+              dropdown: (
+                <AddItemBtnWrapper>
+                  <span>{Array.isArray(contents) && contents.length + 1}</span>
+                  <span className="AddItemBtn" onClick={handleAddInputItem}>
+                    옵션 추가
+                  </span>
+                </AddItemBtnWrapper>
+              ),
+            }[inputType]}
         </ContentsContainer>
       </>
     </FormContainer>

@@ -2,6 +2,9 @@ import React from 'react';
 import FormContainer from './FormContainer';
 import styled from 'styled-components';
 import TextField from '@mui/material/TextField';
+import { useAppDispatch } from '@hooks/useAppDispatch';
+import { setContents, setTitle } from '@store/slices/questionSlice';
+import { useAppSelector } from '@hooks/useAppSelector';
 
 const PurpleLine = styled.div`
   width: 100%;
@@ -27,6 +30,19 @@ const STextField = styled(TextField)`
 `;
 
 function FormHeader() {
+  const dispatch = useAppDispatch();
+  const header = useAppSelector((state) =>
+    state.question.find((q) => q.id === 'title')
+  );
+
+  const handleTitle = (e: React.ChangeEvent<HTMLInputElement>) => {
+    dispatch(setTitle({ id: 'title', contents: e.target.value }));
+  };
+
+  const handleDescription = (e: React.ChangeEvent<HTMLInputElement>) => {
+    dispatch(setContents({ id: 'title', contents: e.target.value }));
+  };
+
   return (
     <FormContainer>
       <PurpleLine />
@@ -36,8 +52,9 @@ function FormHeader() {
         id="standard-search"
         type="search"
         variant="standard"
-        defaultValue="제목없는 설문지"
         placeholder="설문지 제목"
+        value={header?.title}
+        onChange={handleTitle}
       />
       <STextField
         inputProps={{ style: { fontSize: 14 } }}
@@ -45,6 +62,8 @@ function FormHeader() {
         type="search"
         variant="standard"
         placeholder="설문지 설명"
+        value={header?.contents}
+        onChange={handleDescription}
       />
     </FormContainer>
   );

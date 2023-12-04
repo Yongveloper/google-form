@@ -11,10 +11,10 @@ type InputType =
 
 interface IContentsArray {
   id: string;
-  contents: string;
+  text: string;
 }
 
-interface IQuestion {
+export interface IQuestion {
   id: string;
   title: string;
   inputType: InputType;
@@ -40,7 +40,38 @@ const initialState: IQuestion[] = [
     isFocused: false,
     isRequired: false,
   },
+  {
+    id: '1',
+    title: '질문',
+    inputType: 'radio',
+    contents: [
+      {
+        id: '2',
+        text: '옵션 1',
+      },
+      {
+        id: '3',
+        text: '옵션 2',
+      },
+    ],
+    isFocused: false,
+    isRequired: false,
+  },
 ];
+
+const createNewCard: IQuestion = (id: string, title = '') => ({
+  id,
+  title,
+  inputType: 'radio',
+  contents: [
+    {
+      id: String(Number(id) + 1),
+      text: '옵션 1',
+    },
+  ],
+  isFocused: true,
+  isRequired: false,
+});
 
 const questionSlice = createSlice({
   name: 'question',
@@ -64,9 +95,38 @@ const questionSlice = createSlice({
         state[targetIndex].contents = action.payload.contents;
       }
     },
+    setInputType: (state: IQuestion[], action: IAction) => {
+      const targetIndex = state.findIndex(
+        (question) => question.id === action.payload.id
+      );
+      state[targetIndex].inputType = action.payload.contents as InputType;
+      if (
+        action.payload.contents === 'shortAnswer' ||
+        action.payload.contents === 'longAnswer'
+      ) {
+        state[targetIndex].contents = '';
+      } else {
+        state[targetIndex].contents = [
+          {
+            id: String(Number(action.payload.id) + 1),
+            text: '옵션 1',
+          },
+        ];
+      }
+    },
+    setFocused: (state: IQuestion[], action) => {
+      state.forEach((question) => {
+        if (question.id !== action.payload.id) {
+          question.isFocused = false;
+        } else {
+          question.isFocused = true;
+        }
+      });
+    },
   },
 });
 
-export const { setTitle, setContents } = questionSlice.actions;
+export const { setTitle, setContents, setInputType, setFocused } =
+  questionSlice.actions;
 
 export default questionSlice.reducer;

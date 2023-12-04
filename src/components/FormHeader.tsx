@@ -1,10 +1,10 @@
 import React from 'react';
 import FormContainer from './FormContainer';
 import styled from 'styled-components';
-import TextField from '@mui/material/TextField';
 import { useAppDispatch } from '@hooks/useAppDispatch';
 import { setContents, setTitle } from '@store/slices/questionSlice';
 import { useAppSelector } from '@hooks/useAppSelector';
+import { STextField } from './common/STextField.styles';
 
 const PurpleLine = styled.div`
   width: 100%;
@@ -13,20 +13,6 @@ const PurpleLine = styled.div`
   position: absolute;
   top: 0;
   left: 0;
-`;
-
-const STextField = styled(TextField)`
-  width: 100%;
-
-  & .MuiInput-underline:before {
-    border-bottom: 1px solid ${({ theme }) => theme.colors.grey};
-  }
-  & .MuiInput-underline:after {
-    border-bottom-color: ${({ theme }) => theme.colors.purple};
-  }
-  & .MuiInput-underline:hover:not(.Mui-disabled):before {
-    border-bottom: 1px solid ${({ theme }) => theme.colors.grey};
-  }
 `;
 
 function FormHeader() {
@@ -44,7 +30,7 @@ function FormHeader() {
   };
 
   return (
-    <FormContainer>
+    <FormContainer id="title">
       <PurpleLine />
       <STextField
         sx={{ mb: '10px' }}

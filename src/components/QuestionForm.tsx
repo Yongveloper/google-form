@@ -103,6 +103,7 @@ function QuestionForm({ id }: IQuestionFormProps) {
               id="filled-search"
               type="search"
               variant="filled"
+              placeholder="질문"
               value={title}
               onChange={handleTitle}
             />

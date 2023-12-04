@@ -56,24 +56,35 @@ const initialState: IQuestion[] = [
   },
 ];
 
-const createNewCard: IQuestion = (id: string, title = '') => ({
-  id,
-  title,
-  inputType: 'radio',
-  contents: [
-    {
-      id: String(Number(id) + 1),
-      text: '옵션 1',
-    },
-  ],
-  isFocused: true,
-  isRequired: false,
-});
+const createNewCard = (id: string) => {
+  return {
+    id,
+    title: '',
+    inputType: 'radio',
+    contents: [
+      {
+        id: String(Number(id) + 1),
+        text: '옵션 1',
+        isEtc: false,
+      },
+    ],
+    isFocused: true,
+    isRequired: false,
+  } as IQuestion;
+};
 
 const questionSlice = createSlice({
   name: 'question',
   initialState,
   reducers: {
+    addNewQuestion: (state: IQuestion[]) => {
+      state.forEach((question) => {
+        question.isFocused = false;
+      });
+      const lastId = state[state.length - 1].id;
+      const newId = String(Number(lastId) + 1);
+      state.push(createNewCard(newId));
+    },
     setTitle: (state: IQuestion[], action: IAction) => {
       const targetIndex = state.findIndex(
         (question) => question.id === action.payload.id
@@ -142,7 +153,13 @@ const questionSlice = createSlice({
   },
 });
 
-export const { setTitle, setContents, setInputType, setFocused, addInputItem } =
-  questionSlice.actions;
+export const {
+  addNewQuestion,
+  setTitle,
+  setContents,
+  setInputType,
+  setFocused,
+  addInputItem,
+} = questionSlice.actions;
 
 export default questionSlice.reducer;

@@ -213,6 +213,21 @@ const questionSlice = createSlice({
       const [removed] = state.splice(sourceIndex + 1, 1);
       state.splice(destinationIndex + 1, 0, removed);
     },
+    moveQuestionItem: (
+      state: IQuestion[],
+      action: PayloadAction<{
+        questionId: string;
+        sourceIndex: number;
+        destinationIndex: number;
+      }>
+    ) => {
+      const { questionId, sourceIndex, destinationIndex } = action.payload;
+      const contents = state.find((question) => question.id === questionId)
+        ?.contents as IContents[];
+      const [removed] = contents.splice(sourceIndex, 1);
+      contents.splice(destinationIndex, 0, removed);
+      console.log('render');
+    },
   },
 });
 
@@ -229,6 +244,7 @@ export const {
   deleteQuestion,
   setRequired,
   moveQuestion,
+  moveQuestionItem,
 } = questionSlice.actions;
 
 export default questionSlice.reducer;

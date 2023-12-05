@@ -1,10 +1,17 @@
 import React, { useRef } from 'react';
 import styled from 'styled-components';
-import { Draggable, DraggableProvided } from 'react-beautiful-dnd';
+import {
+  DragDropContext,
+  Draggable,
+  DraggableProvided,
+  DropResult,
+  Droppable,
+} from 'react-beautiful-dnd';
 import {
   addInputItem,
   changeItemContent,
   deleteInputItem,
+  moveQuestionItem,
   setTitle,
 } from '@store/slices/questionSlice';
 import Box from '@mui/system/Box';
@@ -25,14 +32,7 @@ const TopContainer = styled.div`
   margin-bottom: 24px;
 `;
 
-const ContentsContainer = styled.div`
-  .input-items {
-    height: 48px;
-    display: flex;
-    align-items: center;
-    gap: 10px;
-  }
-`;
+const ContentsContainer = styled.div``;
 
 const SDragIndicatorIcon = styled(DragIndicatorIcon)`
   color: gray;
@@ -132,6 +132,17 @@ function QuestionForm({ id, index }: QuestionFormProps) {
     dispatch(deleteInputItem({ id, contentId }));
   };
 
+  const handleOnItemDragEnd = ({ source, destination }: DropResult) => {
+    if (!destination) return;
+    dispatch(
+      moveQuestionItem({
+        questionId: id,
+        sourceIndex: source.index,
+        destinationIndex: destination.index,
+      })
+    );
+  };
+
   return (
     <Draggable draggableId={id} index={index}>
       {(provided: DraggableProvided, snapshot) => (
@@ -186,20 +197,37 @@ function QuestionForm({ id, index }: QuestionFormProps) {
                     disabled={true}
                   />
                 )}
-                {Array.isArray(contents) &&
-                  contents.map((content, index) => (
-                    <QuestionInputItem
-                      key={content.id}
-                      index={index}
-                      inputType={inputType}
-                      contentsLength={contents.length}
-                      content={content}
-                      handleChangeContents={handleChangeContents}
-                      handleDeleteInputItem={handleDeleteInputItem}
-                      isFocused={isFocused}
-                      isExistEtc={isExistEtc}
-                    />
-                  ))}
+                {Array.isArray(contents) && (
+                  <DragDropContext onDragEnd={handleOnItemDragEnd}>
+                    <Droppable
+                      droppableId={id}
+                      type="contents"
+                      direction="vertical"
+                    >
+                      {(provided) => (
+                        <div
+                          {...provided.droppableProps}
+                          ref={provided.innerRef}
+                        >
+                          {contents.map((content, index) => (
+                            <QuestionInputItem
+                              key={content.id}
+                              index={index}
+                              inputType={inputType}
+                              contentsLength={contents.length}
+                              content={content}
+                              handleChangeContents={handleChangeContents}
+                              handleDeleteInputItem={handleDeleteInputItem}
+                              isFocused={isFocused}
+                              isExistEtc={isExistEtc}
+                            />
+                          ))}
+                          {provided.placeholder}
+                        </div>
+                      )}
+                    </Droppable>
+                  </DragDropContext>
+                )}
                 {isFocused &&
                   inputType !== 'shortAnswer' &&
                   inputType !== 'longAnswer' && (

@@ -14,6 +14,7 @@ import { STextField } from './common/STextField.styles';
 import InputTypeSelect from './InputTypeSelect';
 import QuestionInputItem from './QuestionInputItem';
 import AddItemButton from './AddItemButton';
+import FormFooter from './FormFooter';
 
 const TopContainer = styled.div`
   display: flex;
@@ -167,6 +168,7 @@ function QuestionForm({ id }: IQuestionFormProps) {
               />
             )}
         </ContentsContainer>
+        {isFocused && <FormFooter />}
       </>
     </FormContainer>
   );

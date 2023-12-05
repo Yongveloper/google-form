@@ -36,7 +36,8 @@ function FormContainer({ id, children }: IFormContainerProps) {
     <Card
       onClick={handleFocus}
       sx={{
-        minWidth: 768,
+        maxWidth: 768,
+        width: '100%',
         px: '24px',
         pb: '24px',
         pt: '22px',

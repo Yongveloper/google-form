@@ -1,36 +1,5 @@
-import { createSlice } from '@reduxjs/toolkit';
-
-type InputType =
-  | 'title'
-  | 'description'
-  | 'radio'
-  | 'checkbox'
-  | 'dropdown'
-  | 'shortAnswer'
-  | 'longAnswer';
-
-export interface IContents {
-  id: string;
-  text: string;
-  isEtc: boolean;
-}
-
-export interface IQuestion {
-  id: string;
-  title: string;
-  inputType: InputType;
-  contents: string | IContents[];
-  isFocused: boolean;
-  isRequired: boolean;
-}
-
-interface IAction {
-  type: string;
-  payload: {
-    id: string;
-    contents: string | IContents[];
-  };
-}
+import { createSlice, PayloadAction } from '@reduxjs/toolkit';
+import { IAction, IContents, InputType, IQuestion } from '@store/types';
 
 const initialState: IQuestion[] = [
   {
@@ -143,7 +112,7 @@ const questionSlice = createSlice({
       }
       state[targetIndex].inputType = action.payload.contents as InputType;
     },
-    setFocused: (state: IQuestion[], action) => {
+    setFocused: (state: IQuestion[], action: PayloadAction<{ id: string }>) => {
       state.forEach((question) => {
         if (question.id !== action.payload.id) {
           question.isFocused = false;
@@ -152,7 +121,10 @@ const questionSlice = createSlice({
         }
       });
     },
-    changeItemContent: (state: IQuestion[], action) => {
+    changeItemContent: (
+      state: IQuestion[],
+      action: PayloadAction<{ id: string; contentId: string; text: string }>
+    ) => {
       const targetIndex = state.findIndex(
         (question) => question.id === action.payload.id
       );
@@ -162,7 +134,15 @@ const questionSlice = createSlice({
       ) as IContents;
       target.text = action.payload.text;
     },
-    addInputItem: (state: IQuestion[], action) => {
+    addInputItem: (
+      state: IQuestion[],
+      action: PayloadAction<{
+        id: string;
+        contentId: string;
+        text: string;
+        isEtc: boolean;
+      }>
+    ) => {
       const contents = state.find(
         (question) => question.id === action.payload.id
       )?.contents as IContents[];
@@ -183,7 +163,10 @@ const questionSlice = createSlice({
         });
       }
     },
-    deleteInputItem: (state: IQuestion[], action) => {
+    deleteInputItem: (
+      state: IQuestion[],
+      action: PayloadAction<{ id: string; contentId: string }>
+    ) => {
       const contents = state.find(
         (question) => question.id === action.payload.id
       )?.contents as IContents[];

@@ -4,22 +4,16 @@ import {
   addInputItem,
   changeItemContent,
   deleteInputItem,
-  setInputType,
   setTitle,
 } from '@store/slices/questionSlice';
 import Box from '@mui/system/Box';
 import FormContainer from './FormContainer';
-import RadioButtonUncheckedIcon from '@mui/icons-material/RadioButtonUnchecked';
-import CropSquareIcon from '@mui/icons-material/CropSquare';
-import MenuItem from '@mui/material/MenuItem';
-import FormControl from '@mui/material/FormControl';
-import Select, { SelectChangeEvent } from '@mui/material/Select';
 import { useAppSelector } from '@hooks/useAppSelector';
 import { useAppDispatch } from '@hooks/useAppDispatch';
 import { STextField } from './common/STextField.styles';
-import { Button } from '@mui/material';
-import IconButton from '@mui/material/IconButton';
-import ClearIcon from '@mui/icons-material/Clear';
+import InputTypeSelect from './InputTypeSelect';
+import QuestionInputItem from './QuestionInputItem';
+import AddItemButton from './AddItemButton';
 
 const TopContainer = styled.div`
   display: flex;
@@ -34,22 +28,6 @@ const ContentsContainer = styled.div`
     display: flex;
     align-items: center;
     gap: 10px;
-  }
-`;
-
-const AddItemBtnContainer = styled.div`
-  display: flex;
-  align-items: center;
-  height: 48px;
-  font-size: 14px;
-
-  .AddItemBtn {
-    margin: 0 10px;
-    color: ${({ theme }) => theme.colors.lightGrey};
-    &:hover {
-      cursor: pointer;
-      border-bottom: 1px solid ${({ theme }) => theme.colors.grey};
-    }
   }
 `;
 
@@ -85,10 +63,6 @@ function QuestionForm({ id }: IQuestionFormProps) {
   const dispatch = useAppDispatch();
   const handleTitle = (e: React.ChangeEvent<HTMLInputElement>) => {
     dispatch(setTitle({ id, contents: e.target.value }));
-  };
-
-  const handleInputType = (e: SelectChangeEvent) => {
-    dispatch(setInputType({ id, contents: e.target.value }));
   };
 
   const handleChangeContents = (
@@ -145,17 +119,7 @@ function QuestionForm({ id }: IQuestionFormProps) {
               onChange={handleTitle}
             />
           )}
-          {isFocused && (
-            <FormControl sx={{ minWidth: 208 }}>
-              <Select value={inputType} onChange={handleInputType}>
-                <MenuItem value="shortAnswer">단답형</MenuItem>
-                <MenuItem value="longAnswer">장문형</MenuItem>
-                <MenuItem value="radio">객관식 질문</MenuItem>
-                <MenuItem value="checkbox">체크박스</MenuItem>
-                <MenuItem value="dropdown">드롭다운</MenuItem>
-              </Select>
-            </FormControl>
-          )}
+          {isFocused && <InputTypeSelect id={id} inputType={inputType} />}
         </TopContainer>
         <ContentsContainer>
           {inputType === 'shortAnswer' && (
@@ -180,88 +144,28 @@ function QuestionForm({ id }: IQuestionFormProps) {
           )}
           {Array.isArray(contents) &&
             contents.map((content, index) => (
-              <div className="input-items" key={index}>
-                {inputType === 'radio' && <RadioButtonUncheckedIcon />}
-                {inputType === 'checkbox' && <CropSquareIcon />}
-                {inputType === 'dropdown' && <span>{index + 1}</span>}
-                {content.isEtc ? (
-                  <STextField
-                    id="standard-basic"
-                    type="text"
-                    variant="standard"
-                    placeholder="기타.."
-                    value="기타.."
-                    disabled={true}
-                  />
-                ) : (
-                  <STextField
-                    id="standard-basic"
-                    type="text"
-                    variant="standard"
-                    value={content.text}
-                    onChange={(e) => handleChangeContents(e, content.id)}
-                  />
-                )}
-                {((contents.length === 2 && (content.isEtc || !isExistEtc())) ||
-                  contents.length >= 3) && (
-                  <IconButton
-                    aria-label="delete"
-                    onClick={() => handleDeleteInputItem(content.id)}
-                  >
-                    <ClearIcon />
-                  </IconButton>
-                )}
-              </div>
+              <QuestionInputItem
+                key={content.id}
+                index={index}
+                inputType={inputType}
+                contentsLength={contents.length}
+                content={content}
+                handleChangeContents={handleChangeContents}
+                handleDeleteInputItem={handleDeleteInputItem}
+                isExistEtc={isExistEtc}
+              />
             ))}
           {isFocused &&
-            {
-              radio: (
-                <AddItemBtnContainer>
-                  <RadioButtonUncheckedIcon />
-                  <span className="AddItemBtn" onClick={handleAddInputItem}>
-                    옵션 추가
-                  </span>
-                  {!isExistEtc() && (
-                    <>
-                      <span>또는</span>
-                      <Button
-                        sx={{ pt: '10px' }}
-                        onClick={handleAddInputEtcItem}
-                      >
-                        '기타' 추가
-                      </Button>
-                    </>
-                  )}
-                </AddItemBtnContainer>
-              ),
-              checkbox: (
-                <AddItemBtnContainer>
-                  <CropSquareIcon />
-                  <span className="AddItemBtn" onClick={handleAddInputItem}>
-                    옵션 추가
-                  </span>
-                  {!isExistEtc() && (
-                    <>
-                      <span>또는</span>
-                      <Button
-                        sx={{ pt: '10px' }}
-                        onClick={handleAddInputEtcItem}
-                      >
-                        '기타' 추가
-                      </Button>
-                    </>
-                  )}
-                </AddItemBtnContainer>
-              ),
-              dropdown: (
-                <AddItemBtnContainer>
-                  <span>{Array.isArray(contents) && contents.length + 1}</span>
-                  <span className="AddItemBtn" onClick={handleAddInputItem}>
-                    옵션 추가
-                  </span>
-                </AddItemBtnContainer>
-              ),
-            }[inputType]}
+            inputType !== 'shortAnswer' &&
+            inputType !== 'longAnswer' && (
+              <AddItemButton
+                inputType={inputType}
+                contentsLength={Array.isArray(contents) ? contents.length : 0}
+                handleAddInputItem={handleAddInputItem}
+                handleAddInputEtcItem={handleAddInputEtcItem}
+                isExistEtc={isExistEtc}
+              />
+            )}
         </ContentsContainer>
       </>
     </FormContainer>

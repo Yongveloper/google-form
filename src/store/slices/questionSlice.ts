@@ -12,7 +12,7 @@ type InputType =
 export interface IContents {
   id: string;
   text: string;
-  isEtc?: boolean;
+  isEtc: boolean;
 }
 
 export interface IQuestion {
@@ -49,6 +49,7 @@ const initialState: IQuestion[] = [
       {
         id: String(Date.now()),
         text: '옵션 1',
+        isEtc: false,
       },
     ],
     isFocused: false,
@@ -107,12 +108,14 @@ const questionSlice = createSlice({
       const targetIndex = state.findIndex(
         (question) => question.id === action.payload.id
       );
+      // 짧은답변, 긴답변으로 변경시 contents는 빈 텍스트로 초기화
       if (
         action.payload.contents === 'shortAnswer' ||
         action.payload.contents === 'longAnswer'
       ) {
         state[targetIndex].contents = '';
       }
+      // 짧은답변, 긴답변에서 라디오, 체크박스로 변경시 옵션 1 추가
       if (
         state[targetIndex].inputType === 'shortAnswer' ||
         state[targetIndex].inputType === 'longAnswer'
@@ -126,8 +129,16 @@ const questionSlice = createSlice({
             {
               id: String(Date.now()),
               text: '옵션 1',
+              isEtc: false,
             },
           ];
+        }
+      }
+      // 드롭다운에서 라디오, 체크박스로 변경시 마지막에 etc가 있으면 삭제
+      if (action.payload.contents === 'dropdown') {
+        const contents = state[targetIndex].contents as IContents[];
+        if (contents[contents.length - 1].isEtc) {
+          contents.pop();
         }
       }
       state[targetIndex].inputType = action.payload.contents as InputType;
@@ -155,10 +166,22 @@ const questionSlice = createSlice({
       const contents = state.find(
         (question) => question.id === action.payload.id
       )?.contents as IContents[];
-      contents.push({
-        id: action.payload.contentId,
-        text: action.payload.text,
-      });
+      // contents에의 마지막 요소의 isEtc가 true면 마지막 앞에 추가
+      // 아니면 마지막에 추가
+      const lastItem = contents[contents.length - 1];
+      if (lastItem.isEtc) {
+        contents.splice(contents.length - 1, 0, {
+          id: action.payload.contentId,
+          text: action.payload.text,
+          isEtc: action.payload.isEtc,
+        });
+      } else {
+        contents.push({
+          id: action.payload.contentId,
+          text: action.payload.text,
+          isEtc: action.payload.isEtc,
+        });
+      }
     },
   },
 });

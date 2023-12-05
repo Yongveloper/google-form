@@ -16,6 +16,7 @@ import Select, { SelectChangeEvent } from '@mui/material/Select';
 import { useAppSelector } from '@hooks/useAppSelector';
 import { useAppDispatch } from '@hooks/useAppDispatch';
 import { STextField } from './common/STextField.styles';
+import { Button } from '@mui/material';
 
 const TopContainer = styled.div`
   display: flex;
@@ -33,14 +34,14 @@ const ContentsContainer = styled.div`
   }
 `;
 
-const AddItemBtnWrapper = styled.div`
+const AddItemBtnContainer = styled.div`
   display: flex;
   align-items: center;
   height: 48px;
+  font-size: 14px;
 
   .AddItemBtn {
-    margin-left: 10px;
-    font-size: 14px;
+    margin: 0 10px;
     color: ${({ theme }) => theme.colors.lightGrey};
     &:hover {
       cursor: pointer;
@@ -71,6 +72,13 @@ function QuestionForm({ id }: IQuestionFormProps) {
     (state) => state.question.find((question) => question.id === id)?.contents
   );
 
+  const isExistEtc = () => {
+    if (Array.isArray(contents)) {
+      return contents.some((content) => content.isEtc);
+    }
+    return false;
+  };
+
   const dispatch = useAppDispatch();
   const handleTitle = (e: React.ChangeEvent<HTMLInputElement>) => {
     dispatch(setTitle({ id, contents: e.target.value }));
@@ -93,7 +101,21 @@ function QuestionForm({ id }: IQuestionFormProps) {
         addInputItem({
           id,
           contentId: String(Date.now()),
-          text: `옵션 ${contents.length + 1}`,
+          text: `옵션 ${isExistEtc() ? contents.length : contents.length + 1}`,
+          isEtc: false,
+        })
+      );
+    }
+  };
+
+  const handleAddInputEtcItem = () => {
+    if (Array.isArray(contents)) {
+      dispatch(
+        addInputItem({
+          id,
+          contentId: String(Date.now()),
+          text: `기타..`,
+          isEtc: true,
         })
       );
     }
@@ -155,40 +177,72 @@ function QuestionForm({ id }: IQuestionFormProps) {
                 {inputType === 'radio' && <RadioButtonUncheckedIcon />}
                 {inputType === 'checkbox' && <CropSquareIcon />}
                 {inputType === 'dropdown' && <span>{index + 1}</span>}
-                <STextField
-                  id="standard-basic"
-                  type="text"
-                  variant="standard"
-                  value={content.text}
-                  onChange={(e) => handleChangeContents(e, content.id)}
-                />
+                {content.isEtc ? (
+                  <STextField
+                    id="standard-basic"
+                    type="text"
+                    variant="standard"
+                    placeholder="기타.."
+                    disabled={true}
+                  />
+                ) : (
+                  <STextField
+                    id="standard-basic"
+                    type="text"
+                    variant="standard"
+                    value={content.text}
+                    onChange={(e) => handleChangeContents(e, content.id)}
+                  />
+                )}
               </div>
             ))}
           {isFocused &&
             {
               radio: (
-                <AddItemBtnWrapper>
+                <AddItemBtnContainer>
                   <RadioButtonUncheckedIcon />
                   <span className="AddItemBtn" onClick={handleAddInputItem}>
                     옵션 추가
                   </span>
-                </AddItemBtnWrapper>
+                  {!isExistEtc() && (
+                    <>
+                      <span>또는</span>
+                      <Button
+                        sx={{ pt: '10px' }}
+                        onClick={handleAddInputEtcItem}
+                      >
+                        '기타' 추가
+                      </Button>
+                    </>
+                  )}
+                </AddItemBtnContainer>
               ),
               checkbox: (
-                <AddItemBtnWrapper>
+                <AddItemBtnContainer>
                   <CropSquareIcon />
                   <span className="AddItemBtn" onClick={handleAddInputItem}>
                     옵션 추가
                   </span>
-                </AddItemBtnWrapper>
+                  {!isExistEtc() && (
+                    <>
+                      <span>또는</span>
+                      <Button
+                        sx={{ pt: '10px' }}
+                        onClick={handleAddInputEtcItem}
+                      >
+                        '기타' 추가
+                      </Button>
+                    </>
+                  )}
+                </AddItemBtnContainer>
               ),
               dropdown: (
-                <AddItemBtnWrapper>
+                <AddItemBtnContainer>
                   <span>{Array.isArray(contents) && contents.length + 1}</span>
                   <span className="AddItemBtn" onClick={handleAddInputItem}>
                     옵션 추가
                   </span>
-                </AddItemBtnWrapper>
+                </AddItemBtnContainer>
               ),
             }[inputType]}
         </ContentsContainer>

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useRef, useEffect } from 'react';
 import styled from 'styled-components';
 import {
   addInputItem,
@@ -54,6 +54,10 @@ function QuestionForm({ id }: IQuestionFormProps) {
     (state) => state.question.find((question) => question.id === id)?.contents
   );
 
+  const dispatch = useAppDispatch();
+
+  const inputRef = useRef<HTMLInputElement>(null);
+
   const isExistEtc = () => {
     if (Array.isArray(contents)) {
       return contents.some((content) => content.isEtc);
@@ -61,7 +65,6 @@ function QuestionForm({ id }: IQuestionFormProps) {
     return false;
   };
 
-  const dispatch = useAppDispatch();
   const handleTitle = (e: React.ChangeEvent<HTMLInputElement>) => {
     dispatch(setTitle({ id, contents: e.target.value }));
   };
@@ -103,6 +106,12 @@ function QuestionForm({ id }: IQuestionFormProps) {
     dispatch(deleteInputItem({ id, contentId }));
   };
 
+  useEffect(() => {
+    if (isFocused && inputRef.current) {
+      inputRef.current.focus();
+    }
+  }, [isFocused]);
+
   return (
     <FormContainer id={id}>
       <>
@@ -110,6 +119,7 @@ function QuestionForm({ id }: IQuestionFormProps) {
           {!isFocused && <Box>{title}</Box>}
           {isFocused && (
             <STextField
+              inputRef={inputRef}
               sx={{ maxWidth: '446px' }}
               inputProps={{ style: { padding: 16 } }}
               id="filled-search"

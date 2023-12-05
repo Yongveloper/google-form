@@ -11,12 +11,12 @@ const initialState: IQuestion[] = [
     isRequired: false,
   },
   {
-    id: '1',
+    id: String(Date.now()),
     title: '질문',
     inputType: 'radio',
     contents: [
       {
-        id: String(Date.now()),
+        id: String(Date.now() + 1),
         text: '옵션 1',
         isEtc: false,
       },
@@ -29,7 +29,7 @@ const initialState: IQuestion[] = [
 const createNewCard = (id: string) => {
   return {
     id,
-    title: '',
+    title: '질문',
     inputType: 'radio',
     contents: [
       {
@@ -205,6 +205,14 @@ const questionSlice = createSlice({
       );
       state[targetIndex].isRequired = !state[targetIndex].isRequired;
     },
+    moveQuestion: (
+      state: IQuestion[],
+      action: PayloadAction<{ sourceIndex: number; destinationIndex: number }>
+    ) => {
+      const { sourceIndex, destinationIndex } = action.payload;
+      const [removed] = state.splice(sourceIndex + 1, 1);
+      state.splice(destinationIndex + 1, 0, removed);
+    },
   },
 });
 
@@ -220,6 +228,7 @@ export const {
   copyQuestion,
   deleteQuestion,
   setRequired,
+  moveQuestion,
 } = questionSlice.actions;
 
 export default questionSlice.reducer;

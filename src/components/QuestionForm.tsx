@@ -1,5 +1,6 @@
 import React, { useRef, useEffect } from 'react';
 import styled from 'styled-components';
+import { Draggable, DraggableProvided } from 'react-beautiful-dnd';
 import {
   addInputItem,
   changeItemContent,
@@ -7,6 +8,7 @@ import {
   setTitle,
 } from '@store/slices/questionSlice';
 import Box from '@mui/system/Box';
+import DragIndicatorIcon from '@mui/icons-material/DragIndicator';
 import FormContainer from './FormContainer';
 import { useAppSelector } from '@hooks/useAppSelector';
 import { useAppDispatch } from '@hooks/useAppDispatch';
@@ -32,11 +34,26 @@ const ContentsContainer = styled.div`
   }
 `;
 
-interface IQuestionFormProps {
+const SDragIndicatorIcon = styled(DragIndicatorIcon)`
+  color: gray;
+  opacity: 0;
+  transform: rotate(90deg);
+  margin-top: -24px;
+`;
+
+const DndButtonSection = styled.div`
+  text-align: center;
+  &:hover ${SDragIndicatorIcon} {
+    opacity: 1;
+  }
+`;
+
+interface QuestionFormProps {
   id: string;
+  index: number;
 }
 
-function QuestionForm({ id }: IQuestionFormProps) {
+function QuestionForm({ id, index }: QuestionFormProps) {
   const isFocused = useAppSelector(
     (state) =>
       state.question.find((question) => question.id === id)
@@ -121,75 +138,93 @@ function QuestionForm({ id }: IQuestionFormProps) {
   }, [isFocused]);
 
   return (
-    <FormContainer id={id}>
-      <>
-        <TopContainer>
-          {!isFocused && <Box>{title}</Box>}
-          {isFocused && (
-            <STextField
-              inputRef={inputRef}
-              sx={{ maxWidth: '446px' }}
-              inputProps={{ style: { padding: 16 } }}
-              id="filled-search"
-              type="search"
-              variant="filled"
-              placeholder="질문"
-              value={title}
-              onChange={handleTitle}
-            />
-          )}
-          {isFocused && <InputTypeSelect id={id} inputType={inputType} />}
-        </TopContainer>
-        <ContentsContainer>
-          {inputType === 'shortAnswer' && (
-            <STextField
-              sx={{ width: '30%', mb: '44px' }}
-              id="standard-search"
-              type="search"
-              variant="standard"
-              defaultValue="단답형 텍스트"
-              disabled={true}
-            />
-          )}
-          {inputType === 'longAnswer' && (
-            <STextField
-              sx={{ width: '50%', mb: '44px' }}
-              id="standard-search"
-              type="search"
-              variant="standard"
-              defaultValue="장문형 텍스트"
-              disabled={true}
-            />
-          )}
-          {Array.isArray(contents) &&
-            contents.map((content, index) => (
-              <QuestionInputItem
-                key={content.id}
-                index={index}
-                inputType={inputType}
-                contentsLength={contents.length}
-                content={content}
-                handleChangeContents={handleChangeContents}
-                handleDeleteInputItem={handleDeleteInputItem}
-                isFocused={isFocused}
-                isExistEtc={isExistEtc}
-              />
-            ))}
-          {isFocused &&
-            inputType !== 'shortAnswer' &&
-            inputType !== 'longAnswer' && (
-              <AddItemButton
-                inputType={inputType}
-                contentsLength={Array.isArray(contents) ? contents.length : 0}
-                handleAddInputItem={handleAddInputItem}
-                handleAddInputEtcItem={handleAddInputEtcItem}
-                isExistEtc={isExistEtc}
-              />
-            )}
-        </ContentsContainer>
-        {isFocused && <FormFooter id={id} isRequired={isRequired} />}
-      </>
-    </FormContainer>
+    <Draggable draggableId={id} index={index}>
+      {(provided: DraggableProvided, snapshot) => (
+        <div
+          ref={provided.innerRef}
+          {...provided.draggableProps}
+          style={{
+            ...provided.draggableProps.style,
+            opacity: snapshot.isDragging ? 0.7 : 1,
+          }}
+        >
+          <FormContainer id={id}>
+            <>
+              <DndButtonSection {...provided.dragHandleProps}>
+                <SDragIndicatorIcon />
+              </DndButtonSection>
+              <TopContainer>
+                {!isFocused && <Box>{title}</Box>}
+                {isFocused && (
+                  <STextField
+                    inputRef={inputRef}
+                    sx={{ maxWidth: '446px' }}
+                    inputProps={{ style: { padding: 16 } }}
+                    id="filled-search"
+                    type="search"
+                    variant="filled"
+                    placeholder="질문"
+                    value={title}
+                    onChange={handleTitle}
+                  />
+                )}
+                {isFocused && <InputTypeSelect id={id} inputType={inputType} />}
+              </TopContainer>
+              <ContentsContainer>
+                {inputType === 'shortAnswer' && (
+                  <STextField
+                    sx={{ width: '30%', mb: '44px' }}
+                    id="standard-search"
+                    type="search"
+                    variant="standard"
+                    defaultValue="단답형 텍스트"
+                    disabled={true}
+                  />
+                )}
+                {inputType === 'longAnswer' && (
+                  <STextField
+                    sx={{ width: '50%', mb: '44px' }}
+                    id="standard-search"
+                    type="search"
+                    variant="standard"
+                    defaultValue="장문형 텍스트"
+                    disabled={true}
+                  />
+                )}
+                {Array.isArray(contents) &&
+                  contents.map((content, index) => (
+                    <QuestionInputItem
+                      key={content.id}
+                      index={index}
+                      inputType={inputType}
+                      contentsLength={contents.length}
+                      content={content}
+                      handleChangeContents={handleChangeContents}
+                      handleDeleteInputItem={handleDeleteInputItem}
+                      isFocused={isFocused}
+                      isExistEtc={isExistEtc}
+                    />
+                  ))}
+                {isFocused &&
+                  inputType !== 'shortAnswer' &&
+                  inputType !== 'longAnswer' && (
+                    <AddItemButton
+                      inputType={inputType}
+                      contentsLength={
+                        Array.isArray(contents) ? contents.length : 0
+                      }
+                      handleAddInputItem={handleAddInputItem}
+                      handleAddInputEtcItem={handleAddInputEtcItem}
+                      isExistEtc={isExistEtc}
+                    />
+                  )}
+              </ContentsContainer>
+              {isFocused && <FormFooter id={id} isRequired={isRequired} />}
+            </>
+          </FormContainer>
+        </div>
+      )}
+    </Draggable>
   );
 }
 

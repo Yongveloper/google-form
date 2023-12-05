@@ -32,8 +32,10 @@ function QuestionInputItem({
 }: IQuestionInputItemProps) {
   return (
     <div className="input-items" key={content.id}>
-      {inputType === 'radio' && <RadioButtonUncheckedIcon />}
-      {inputType === 'checkbox' && <CropSquareIcon />}
+      {inputType === 'radio' && (
+        <RadioButtonUncheckedIcon style={{ color: 'grey' }} />
+      )}
+      {inputType === 'checkbox' && <CropSquareIcon style={{ color: 'grey' }} />}
       {inputType === 'dropdown' && <span>{index + 1}</span>}
       {content.isEtc ? (
         <STextField

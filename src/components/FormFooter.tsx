@@ -5,7 +5,7 @@ import Switch from '@mui/material/Switch';
 import ContentCopyIcon from '@mui/icons-material/ContentCopy';
 import DeleteIcon from '@mui/icons-material/Delete';
 import { useAppDispatch } from '@hooks/useAppDispatch';
-import { copyQuestion } from '@store/slices/questionSlice';
+import { copyQuestion, deleteQuestion } from '@store/slices/questionSlice';
 
 const Container = styled.div`
   display: flex;
@@ -34,12 +34,17 @@ function FormFooter({ id }: IFormFooterProps) {
   const handleCopyQuestion = () => {
     dispatch(copyQuestion({ id }));
   };
+
+  const handleDeleteQuestion = () => {
+    dispatch(deleteQuestion({ id }));
+  };
+
   return (
     <Container>
       <IconButton onClick={handleCopyQuestion}>
         <ContentCopyIcon />
       </IconButton>
-      <IconButton>
+      <IconButton onClick={handleDeleteQuestion}>
         <DeleteIcon />
       </IconButton>
       <div className="vertical-dived" />

@@ -51,8 +51,7 @@ const questionSlice = createSlice({
       state.forEach((question) => {
         question.isFocused = false;
       });
-      const lastId = state[state.length - 1].id;
-      const newId = String(Number(lastId) + 1);
+      const newId = String(Number(Date.now()) + 1);
       state.push(createNewCard(newId));
     },
     setTitle: (state: IQuestion[], action: IAction) => {
@@ -187,6 +186,16 @@ const questionSlice = createSlice({
       const newQuestion = { ...state[targetIndex], id: newId, isFocused: true };
       state.splice(targetIndex + 1, 0, newQuestion);
     },
+    deleteQuestion: (
+      state: IQuestion[],
+      action: PayloadAction<{ id: string }>
+    ) => {
+      const targetIndex = state.findIndex(
+        (question) => question.id === action.payload.id
+      );
+      state[targetIndex - 1].isFocused = true;
+      state.splice(targetIndex, 1);
+    },
   },
 });
 
@@ -200,6 +209,7 @@ export const {
   addInputItem,
   deleteInputItem,
   copyQuestion,
+  deleteQuestion,
 } = questionSlice.actions;
 
 export default questionSlice.reducer;

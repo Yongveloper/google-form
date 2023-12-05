@@ -36,7 +36,7 @@ function Form() {
     // source: 드래그 시작된 곳
     // destination: 드롭된 곳
     if (!destination) return;
-
+    if (source.index === destination.index) return;
     dispatch(
       moveQuestion({
         sourceIndex: source.index,

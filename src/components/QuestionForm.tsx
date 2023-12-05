@@ -134,6 +134,7 @@ function QuestionForm({ id, index }: QuestionFormProps) {
 
   const handleOnItemDragEnd = ({ source, destination }: DropResult) => {
     if (!destination) return;
+    if (source.index === destination.index) return;
     dispatch(
       moveQuestionItem({
         questionId: id,

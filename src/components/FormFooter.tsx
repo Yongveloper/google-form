@@ -5,7 +5,11 @@ import Switch from '@mui/material/Switch';
 import ContentCopyIcon from '@mui/icons-material/ContentCopy';
 import DeleteIcon from '@mui/icons-material/Delete';
 import { useAppDispatch } from '@hooks/useAppDispatch';
-import { copyQuestion, deleteQuestion } from '@store/slices/questionSlice';
+import {
+  copyQuestion,
+  deleteQuestion,
+  setRequired,
+} from '@store/slices/questionSlice';
 
 const Container = styled.div`
   display: flex;
@@ -13,7 +17,7 @@ const Container = styled.div`
   justify-content: end;
   height: 64px;
   border-top: 1px solid ${({ theme }) => theme.colors.grey};
-  margin: 0 24px;
+  padding: 0 24px;
   margin-bottom: -24px;
 
   .vertical-dived {
@@ -26,9 +30,10 @@ const Container = styled.div`
 
 interface IFormFooterProps {
   id: string;
+  isRequired: boolean;
 }
 
-function FormFooter({ id }: IFormFooterProps) {
+function FormFooter({ id, isRequired }: IFormFooterProps) {
   const dispatch = useAppDispatch();
 
   const handleCopyQuestion = () => {
@@ -37,6 +42,10 @@ function FormFooter({ id }: IFormFooterProps) {
 
   const handleDeleteQuestion = () => {
     dispatch(deleteQuestion({ id }));
+  };
+
+  const handleRequired = () => {
+    dispatch(setRequired({ id }));
   };
 
   return (
@@ -49,7 +58,11 @@ function FormFooter({ id }: IFormFooterProps) {
       </IconButton>
       <div className="vertical-dived" />
       <span>필수</span>
-      <Switch inputProps={{ 'aria-label': 'Switch demo' }} />
+      <Switch
+        inputProps={{ 'aria-label': 'Switch demo' }}
+        onChange={handleRequired}
+        checked={isRequired}
+      />
     </Container>
   );
 }

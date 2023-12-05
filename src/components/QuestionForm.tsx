@@ -54,6 +54,12 @@ function QuestionForm({ id }: IQuestionFormProps) {
     (state) => state.question.find((question) => question.id === id)?.contents
   );
 
+  const isRequired = useAppSelector(
+    (state) =>
+      state.question.find((question) => question.id === id)
+        ?.isRequired as boolean
+  );
+
   const dispatch = useAppDispatch();
 
   const inputRef = useRef<HTMLInputElement>(null);
@@ -135,7 +141,7 @@ function QuestionForm({ id }: IQuestionFormProps) {
         <ContentsContainer>
           {inputType === 'shortAnswer' && (
             <STextField
-              sx={{ width: '30%' }}
+              sx={{ width: '30%', mb: '44px' }}
               id="standard-search"
               type="search"
               variant="standard"
@@ -145,7 +151,7 @@ function QuestionForm({ id }: IQuestionFormProps) {
           )}
           {inputType === 'longAnswer' && (
             <STextField
-              sx={{ width: '50%' }}
+              sx={{ width: '50%', mb: '44px' }}
               id="standard-search"
               type="search"
               variant="standard"
@@ -178,7 +184,7 @@ function QuestionForm({ id }: IQuestionFormProps) {
               />
             )}
         </ContentsContainer>
-        {isFocused && <FormFooter id={id} />}
+        {isFocused && <FormFooter id={id} isRequired={isRequired} />}
       </>
     </FormContainer>
   );

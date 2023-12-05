@@ -196,6 +196,15 @@ const questionSlice = createSlice({
       state[targetIndex - 1].isFocused = true;
       state.splice(targetIndex, 1);
     },
+    setRequired: (
+      state: IQuestion[],
+      action: PayloadAction<{ id: string }>
+    ) => {
+      const targetIndex = state.findIndex(
+        (question) => question.id === action.payload.id
+      );
+      state[targetIndex].isRequired = !state[targetIndex].isRequired;
+    },
   },
 });
 
@@ -210,6 +219,7 @@ export const {
   deleteInputItem,
   copyQuestion,
   deleteQuestion,
+  setRequired,
 } = questionSlice.actions;
 
 export default questionSlice.reducer;

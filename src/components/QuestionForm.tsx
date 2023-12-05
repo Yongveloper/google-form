@@ -2,6 +2,7 @@ import React from 'react';
 import styled from 'styled-components';
 import {
   addInputItem,
+  changeItemContent,
   setInputType,
   setTitle,
 } from '@store/slices/questionSlice';
@@ -79,6 +80,13 @@ function QuestionForm({ id }: IQuestionFormProps) {
     dispatch(setInputType({ id, contents: e.target.value }));
   };
 
+  const handleChangeContents = (
+    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
+    contentId: string
+  ) => {
+    dispatch(changeItemContent({ id, contentId, text: e.target.value }));
+  };
+
   const handleAddInputItem = () => {
     if (Array.isArray(contents)) {
       dispatch(
@@ -152,7 +160,7 @@ function QuestionForm({ id }: IQuestionFormProps) {
                   type="text"
                   variant="standard"
                   value={content.text}
-                  onChange={handleTitle}
+                  onChange={(e) => handleChangeContents(e, content.id)}
                 />
               </div>
             ))}

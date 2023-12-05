@@ -141,6 +141,16 @@ const questionSlice = createSlice({
         }
       });
     },
+    changeItemContent: (state: IQuestion[], action) => {
+      const targetIndex = state.findIndex(
+        (question) => question.id === action.payload.id
+      );
+      const contents = state[targetIndex].contents as IContents[];
+      const target = contents.find(
+        (content) => content.id === action.payload.contentId
+      ) as IContents;
+      target.text = action.payload.text;
+    },
     addInputItem: (state: IQuestion[], action) => {
       const contents = state.find(
         (question) => question.id === action.payload.id
@@ -159,6 +169,7 @@ export const {
   setContents,
   setInputType,
   setFocused,
+  changeItemContent,
   addInputItem,
 } = questionSlice.actions;
 

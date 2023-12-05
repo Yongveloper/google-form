@@ -3,6 +3,7 @@ import styled from 'styled-components';
 import {
   addInputItem,
   changeItemContent,
+  deleteInputItem,
   setInputType,
   setTitle,
 } from '@store/slices/questionSlice';
@@ -17,6 +18,8 @@ import { useAppSelector } from '@hooks/useAppSelector';
 import { useAppDispatch } from '@hooks/useAppDispatch';
 import { STextField } from './common/STextField.styles';
 import { Button } from '@mui/material';
+import IconButton from '@mui/material/IconButton';
+import ClearIcon from '@mui/icons-material/Clear';
 
 const TopContainer = styled.div`
   display: flex;
@@ -121,6 +124,10 @@ function QuestionForm({ id }: IQuestionFormProps) {
     }
   };
 
+  const handleDeleteInputItem = (contentId: string) => {
+    dispatch(deleteInputItem({ id, contentId }));
+  };
+
   return (
     <FormContainer id={id}>
       <>
@@ -183,6 +190,7 @@ function QuestionForm({ id }: IQuestionFormProps) {
                     type="text"
                     variant="standard"
                     placeholder="기타.."
+                    value="기타.."
                     disabled={true}
                   />
                 ) : (
@@ -193,6 +201,15 @@ function QuestionForm({ id }: IQuestionFormProps) {
                     value={content.text}
                     onChange={(e) => handleChangeContents(e, content.id)}
                   />
+                )}
+                {((contents.length === 2 && (content.isEtc || !isExistEtc())) ||
+                  contents.length >= 3) && (
+                  <IconButton
+                    aria-label="delete"
+                    onClick={() => handleDeleteInputItem(content.id)}
+                  >
+                    <ClearIcon />
+                  </IconButton>
                 )}
               </div>
             ))}

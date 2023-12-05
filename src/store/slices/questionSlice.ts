@@ -183,6 +183,15 @@ const questionSlice = createSlice({
         });
       }
     },
+    deleteInputItem: (state: IQuestion[], action) => {
+      const contents = state.find(
+        (question) => question.id === action.payload.id
+      )?.contents as IContents[];
+      const targetIndex = contents.findIndex(
+        (content) => content.id === action.payload.contentId
+      );
+      contents.splice(targetIndex, 1);
+    },
   },
 });
 
@@ -194,6 +203,7 @@ export const {
   setFocused,
   changeItemContent,
   addInputItem,
+  deleteInputItem,
 } = questionSlice.actions;
 
 export default questionSlice.reducer;

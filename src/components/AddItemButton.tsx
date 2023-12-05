@@ -37,8 +37,10 @@ function AddItemButton({
 }: IAddItemButtonProps) {
   return (
     <AddItemBtnContainer>
-      {inputType === 'radio' && <RadioButtonUncheckedIcon />}
-      {inputType === 'checkbox' && <CropSquareIcon />}
+      {inputType === 'radio' && (
+        <RadioButtonUncheckedIcon style={{ color: 'grey' }} />
+      )}
+      {inputType === 'checkbox' && <CropSquareIcon style={{ color: 'grey' }} />}
       {inputType === 'dropdown' && <span>{contentsLength + 1}</span>}
       <span className="AddItemBtn" onClick={handleAddInputItem}>
         옵션 추가

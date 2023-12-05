@@ -1,4 +1,4 @@
-import React, { useRef, useEffect } from 'react';
+import React, { useRef } from 'react';
 import styled from 'styled-components';
 import { Draggable, DraggableProvided } from 'react-beautiful-dnd';
 import {
@@ -66,7 +66,8 @@ function QuestionForm({ id, index }: QuestionFormProps) {
   );
 
   const title = useAppSelector(
-    (state) => state.question.find((question) => question.id === id)?.title
+    (state) =>
+      state.question.find((question) => question.id === id)?.title as string
   );
 
   const contents = useAppSelector(
@@ -131,12 +132,6 @@ function QuestionForm({ id, index }: QuestionFormProps) {
     dispatch(deleteInputItem({ id, contentId }));
   };
 
-  useEffect(() => {
-    if (isFocused && inputRef.current) {
-      inputRef.current.focus();
-    }
-  }, [isFocused]);
-
   return (
     <Draggable draggableId={id} index={index}>
       {(provided: DraggableProvided, snapshot) => (
@@ -154,7 +149,7 @@ function QuestionForm({ id, index }: QuestionFormProps) {
                 <SDragIndicatorIcon />
               </DndButtonSection>
               <TopContainer>
-                {!isFocused && <Box>{title}</Box>}
+                {!isFocused && <Box>{title.length > 0 ? title : '질문'}</Box>}
                 {isFocused && (
                   <STextField
                     inputRef={inputRef}

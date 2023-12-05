@@ -29,7 +29,7 @@ const initialState: IQuestion[] = [
 const createNewCard = (id: string) => {
   return {
     id,
-    title: '질문',
+    title: '',
     inputType: 'radio',
     contents: [
       {

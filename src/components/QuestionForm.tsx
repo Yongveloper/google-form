@@ -17,6 +17,7 @@ import AddItemButton from './AddItemButton';
 import FormFooter from './FormFooter';
 
 const TopContainer = styled.div`
+  positon: relative;
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -38,7 +39,9 @@ interface IQuestionFormProps {
 
 function QuestionForm({ id }: IQuestionFormProps) {
   const isFocused = useAppSelector(
-    (state) => state.question.find((question) => question.id === id)?.isFocused
+    (state) =>
+      state.question.find((question) => question.id === id)
+        ?.isFocused as boolean
   );
 
   const inputType = useAppSelector(
@@ -169,6 +172,7 @@ function QuestionForm({ id }: IQuestionFormProps) {
                 content={content}
                 handleChangeContents={handleChangeContents}
                 handleDeleteInputItem={handleDeleteInputItem}
+                isFocused={isFocused}
                 isExistEtc={isExistEtc}
               />
             ))}

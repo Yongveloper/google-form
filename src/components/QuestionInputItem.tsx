@@ -17,6 +17,7 @@ interface IQuestionInputItemProps {
   ) => void;
   handleDeleteInputItem: (contentId: string) => void;
   isExistEtc: () => boolean;
+  isFocused: boolean;
 }
 
 function QuestionInputItem({
@@ -27,6 +28,7 @@ function QuestionInputItem({
   handleChangeContents,
   handleDeleteInputItem,
   isExistEtc,
+  isFocused,
 }: IQuestionInputItemProps) {
   return (
     <div className="input-items" key={content.id}>
@@ -51,15 +53,16 @@ function QuestionInputItem({
           onChange={(e) => handleChangeContents(e, content.id)}
         />
       )}
-      {((contentsLength === 2 && (content.isEtc || !isExistEtc())) ||
-        contentsLength >= 3) && (
-        <IconButton
-          aria-label="delete"
-          onClick={() => handleDeleteInputItem(content.id)}
-        >
-          <ClearIcon />
-        </IconButton>
-      )}
+      {isFocused &&
+        ((contentsLength === 2 && (content.isEtc || !isExistEtc())) ||
+          contentsLength >= 3) && (
+          <IconButton
+            aria-label="delete"
+            onClick={() => handleDeleteInputItem(content.id)}
+          >
+            <ClearIcon />
+          </IconButton>
+        )}
     </div>
   );
 }

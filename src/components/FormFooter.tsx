@@ -59,7 +59,7 @@ function FormFooter({ id, isRequired }: IFormFooterProps) {
       <div className="vertical-dived" />
       <span>필수</span>
       <Switch
-        inputProps={{ 'aria-label': 'Switch demo' }}
+        inputProps={{ 'aria-label': 'Require toggle' }}
         onChange={handleRequired}
         checked={isRequired}
       />

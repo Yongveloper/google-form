@@ -5,6 +5,7 @@ export const store = configureStore({
   reducer: {
     question: questionSlice,
   },
+  devTools: import.meta.env.DEV,
 });
 
 export type RootState = ReturnType<typeof store.getState>;

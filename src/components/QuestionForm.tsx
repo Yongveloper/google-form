@@ -168,7 +168,7 @@ function QuestionForm({ id }: IQuestionFormProps) {
               />
             )}
         </ContentsContainer>
-        {isFocused && <FormFooter />}
+        {isFocused && <FormFooter id={id} />}
       </>
     </FormContainer>
   );

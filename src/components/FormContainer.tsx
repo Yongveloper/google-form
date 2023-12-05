@@ -29,6 +29,7 @@ function FormContainer({ id, children }: IFormContainerProps) {
   );
 
   const handleFocus = () => {
+    if (isFocused) return;
     dispatch(setFocused({ id }));
   };
 

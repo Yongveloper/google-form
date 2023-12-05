@@ -175,6 +175,18 @@ const questionSlice = createSlice({
       );
       contents.splice(targetIndex, 1);
     },
+    copyQuestion: (
+      state: IQuestion[],
+      action: PayloadAction<{ id: string }>
+    ) => {
+      const targetIndex = state.findIndex(
+        (question) => question.id === action.payload.id
+      );
+      state[targetIndex].isFocused = false;
+      const newId = String(Date.now());
+      const newQuestion = { ...state[targetIndex], id: newId, isFocused: true };
+      state.splice(targetIndex + 1, 0, newQuestion);
+    },
   },
 });
 
@@ -187,6 +199,7 @@ export const {
   changeItemContent,
   addInputItem,
   deleteInputItem,
+  copyQuestion,
 } = questionSlice.actions;
 
 export default questionSlice.reducer;

@@ -4,6 +4,8 @@ import IconButton from '@mui/material/IconButton';
 import Switch from '@mui/material/Switch';
 import ContentCopyIcon from '@mui/icons-material/ContentCopy';
 import DeleteIcon from '@mui/icons-material/Delete';
+import { useAppDispatch } from '@hooks/useAppDispatch';
+import { copyQuestion } from '@store/slices/questionSlice';
 
 const Container = styled.div`
   display: flex;
@@ -22,10 +24,19 @@ const Container = styled.div`
   }
 `;
 
-function FormFooter() {
+interface IFormFooterProps {
+  id: string;
+}
+
+function FormFooter({ id }: IFormFooterProps) {
+  const dispatch = useAppDispatch();
+
+  const handleCopyQuestion = () => {
+    dispatch(copyQuestion({ id }));
+  };
   return (
     <Container>
-      <IconButton>
+      <IconButton onClick={handleCopyQuestion}>
         <ContentCopyIcon />
       </IconButton>
       <IconButton>

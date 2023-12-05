@@ -17,7 +17,6 @@ import AddItemButton from './AddItemButton';
 import FormFooter from './FormFooter';
 
 const TopContainer = styled.div`
-  positon: relative;
   display: flex;
   justify-content: space-between;
   align-items: center;

@@ -1,22 +1,12 @@
-import React, { useState } from 'react';
-import styled from 'styled-components';
+import React from 'react';
 import { IContents } from '@store/types';
-import { STextField } from '@components/common/STextField.styles';
 import FormGroup from '@mui/material/FormGroup';
 import FormControlLabel from '@mui/material/FormControlLabel';
 import Checkbox from '@mui/material/Checkbox';
 import { useAppDispatch } from '@hooks/useAppDispatch';
-import { setCheckboxAnswer, setEtcText } from '@store/slices/answerSlice';
-
-const EtcInputContainer = styled.div`
-  display: flex;
-  align-items: center;
-  gap: 8px;
-
-  & > span {
-    width: 50px;
-  }
-`;
+import { setCheckboxAnswer } from '@store/slices/answerSlice';
+import EtcInput from './EtcInput';
+import { useEtcAnswerInput } from '@hooks/useEtcAnswerInput';
 
 interface ICheckboxInputProps {
   id: string;
@@ -24,24 +14,17 @@ interface ICheckboxInputProps {
 }
 
 function CheckboxInput({ id, contents }: ICheckboxInputProps) {
-  const [textFieldValue, setTextFieldValue] = useState('');
+  const { etcTextFieldValue, handleEtcTextFieldChange } = useEtcAnswerInput({
+    id,
+  });
   const dispatch = useAppDispatch();
-
-  const handleEtcTextFieldChange = (
-    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
-    contentId: string
-  ) => {
-    e.stopPropagation();
-    setTextFieldValue(e.target.value);
-    dispatch(setEtcText({ id, contentId, text: e.target.value }));
-  };
 
   const handleCheckboxInput = (e: React.ChangeEvent<HTMLInputElement>) => {
     dispatch(setCheckboxAnswer({ id, contentId: e.target.value }));
   };
 
   return (
-    <FormGroup style={{ width: '100%' }} onChange={handleCheckboxInput}>
+    <FormGroup onChange={handleCheckboxInput}>
       {contents.map((content) => (
         <FormControlLabel
           key={content.id}
@@ -49,17 +32,11 @@ function CheckboxInput({ id, contents }: ICheckboxInputProps) {
           control={<Checkbox />}
           label={
             content.isEtc ? (
-              <EtcInputContainer>
-                <span>기타:</span>
-                <STextField
-                  style={{ width: '100%', minWidth: '368px' }}
-                  id="standard-search"
-                  type="search"
-                  variant="standard"
-                  value={textFieldValue}
-                  onChange={(e) => handleEtcTextFieldChange(e, content.id)}
-                />
-              </EtcInputContainer>
+              <EtcInput
+                textFieldValue={etcTextFieldValue}
+                handleEtcTextFieldChange={handleEtcTextFieldChange}
+                contentId={content.id}
+              />
             ) : (
               content.text
             )

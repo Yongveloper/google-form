@@ -24,7 +24,7 @@ const answerSlice = createSlice({
         isRequired: question.isRequired,
       }));
     },
-    setTextFieldAnswer: (
+    setAnswer: (
       state: initialStateType[],
       action: PayloadAction<{ id: string; text: string }>
     ) => {
@@ -36,6 +36,6 @@ const answerSlice = createSlice({
   },
 });
 
-export const { setInitialAnswer, setTextFieldAnswer } = answerSlice.actions;
+export const { setInitialAnswer, setAnswer } = answerSlice.actions;
 
 export default answerSlice.reducer;

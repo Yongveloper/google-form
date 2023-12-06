@@ -12,6 +12,7 @@ function ViewForm() {
   const questions = useAppSelector((state) => state.question).filter(
     (question) => question.id !== 'title'
   );
+  console.log('render');
 
   useEffect(() => {
     dispatch(setInitialAnswer(questions));

@@ -48,7 +48,7 @@ function AnswerFormItem({
         />
       )}
       {inputType === InputTypeAlias.longAnswer && (
-        <AnswerTextFieldInput id={id} width="80%" placeholder="단답형" />
+        <AnswerTextFieldInput id={id} width="80%" placeholder="장문형" />
       )}
       {inputType === InputTypeAlias.radio && (
         <RadioInput id={id} contents={contents as IContents[]} />

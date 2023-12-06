@@ -1,4 +1,4 @@
-import React, { useRef } from 'react';
+import React from 'react';
 import styled from 'styled-components';
 import {
   DragDropContext,
@@ -19,12 +19,12 @@ import DragIndicatorIcon from '@mui/icons-material/DragIndicator';
 import FormContainer from './FormContainer';
 import { useAppSelector } from '@hooks/useAppSelector';
 import { useAppDispatch } from '@hooks/useAppDispatch';
-import { STextField } from './common/STextField.styles';
 import InputTypeSelect from './InputTypeSelect';
 import QuestionInputItem from './QuestionInputItem';
 import AddItemButton from './AddItemButton';
 import FormFooter from './FormFooter';
 import { inputType as InputTypeAlias } from '@store/types';
+import TextField from '@mui/material/TextField';
 
 const TopContainer = styled.div`
   display: flex;
@@ -82,8 +82,6 @@ function QuestionForm({ id, index }: QuestionFormProps) {
   );
 
   const dispatch = useAppDispatch();
-
-  const inputRef = useRef<HTMLInputElement>(null);
 
   const isExistEtc = () => {
     if (Array.isArray(contents)) {
@@ -164,14 +162,13 @@ function QuestionForm({ id, index }: QuestionFormProps) {
               <TopContainer>
                 {!isFocused && <Box>{title.length > 0 ? title : '질문'}</Box>}
                 {isFocused && (
-                  <STextField
-                    inputRef={inputRef}
-                    sx={{ maxWidth: '446px' }}
+                  <TextField
+                    sx={{ maxWidth: '446px', width: '100%' }}
                     inputProps={{ style: { padding: 16 } }}
                     id="filled-search"
+                    placeholder="질문"
                     type="search"
                     variant="filled"
-                    placeholder="질문"
                     value={title}
                     onChange={handleTitle}
                   />
@@ -180,22 +177,20 @@ function QuestionForm({ id, index }: QuestionFormProps) {
               </TopContainer>
               <ContentsContainer>
                 {inputType === 'shortAnswer' && (
-                  <STextField
+                  <TextField
                     sx={{ width: '30%', mb: '44px' }}
-                    id="standard-search"
-                    type="search"
+                    id="standard-disabled"
                     variant="standard"
                     defaultValue="단답형 텍스트"
                     disabled={true}
                   />
                 )}
                 {inputType === 'longAnswer' && (
-                  <STextField
-                    sx={{ width: '50%', mb: '44px' }}
-                    id="standard-search"
-                    type="search"
-                    variant="standard"
+                  <TextField
+                    sx={{ width: '80%', mb: '44px' }}
+                    id="standard-disabled"
                     defaultValue="장문형 텍스트"
+                    variant="standard"
                     disabled={true}
                   />
                 )}

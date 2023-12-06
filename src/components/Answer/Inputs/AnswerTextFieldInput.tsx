@@ -1,5 +1,5 @@
 import React from 'react';
-import { STextField } from '@components/common/STextField.styles';
+import TextField from '@mui/material/TextField';
 import { useAppDispatch } from '@hooks/useAppDispatch';
 import { setSentenceAnswer } from '@store/slices/answerSlice';
 import { useAppSelector } from '@hooks/useAppSelector';
@@ -24,7 +24,7 @@ function AnswerInput({ id, width, maxLength, placeholder }: IAnswerInputProps) {
   };
 
   return (
-    <STextField
+    <TextField
       style={{ width, marginTop: '16px' }}
       id="standard-search"
       inputProps={{ maxLength }}

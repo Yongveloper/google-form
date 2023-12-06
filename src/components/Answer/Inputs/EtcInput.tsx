@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import { STextField } from '@components/common/STextField.styles';
+import TextField from '@mui/material/TextField';
 
 const EtcInputContainer = styled.div`
   display: flex;
@@ -28,7 +28,7 @@ function EtcInput({
   return (
     <EtcInputContainer>
       <span>기타:</span>
-      <STextField
+      <TextField
         style={{ width: '100%', minWidth: '368px' }}
         id="standard-search"
         type="search"

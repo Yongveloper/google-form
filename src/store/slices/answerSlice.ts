@@ -1,5 +1,5 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { inputType, InputType, IQuestion } from '@store/types';
+import { InputType, IQuestion } from '@store/types';
 
 interface CheckboxAnswerType {
   id: string;
@@ -17,13 +17,22 @@ interface initialStateType {
 
 const initialState: initialStateType[] = [];
 
+const getTargetAnswers = (
+  state: initialStateType[],
+  id: string
+): CheckboxAnswerType[] => {
+  return state.find((question) => question.id === id)
+    ?.answers as CheckboxAnswerType[];
+};
+
 const findTargetAnswerItem = (
   state: initialStateType[],
   { id, contentId }: { id: string; contentId: string }
-): CheckboxAnswerType | undefined => {
-  const targetAnswers = state.find((question) => question.id === id)
-    ?.answers as CheckboxAnswerType[];
-  return targetAnswers.find((answer) => answer.id === contentId);
+): CheckboxAnswerType => {
+  const targetAnswers = getTargetAnswers(state, id);
+  return targetAnswers.find(
+    (answer) => answer.id === contentId
+  ) as CheckboxAnswerType;
 };
 
 const answerSlice = createSlice({
@@ -35,15 +44,13 @@ const answerSlice = createSlice({
         id: question.id,
         title: question.title,
         inputType: question.inputType,
-        answers:
-          question.inputType === inputType.checkbox &&
-          Array.isArray(question.contents)
-            ? question.contents.map((content) => ({
-                id: content.id,
-                text: content.text,
-                isChecked: false,
-              }))
-            : '',
+        answers: Array.isArray(question.contents)
+          ? question.contents.map((content) => ({
+              id: content.id,
+              text: content.text,
+              isChecked: false,
+            }))
+          : '',
         isRequired: question.isRequired,
       }));
     },
@@ -56,6 +63,19 @@ const answerSlice = createSlice({
 
       state[targetIndex].answers = text;
     },
+    setRadioAnswer: (
+      state,
+      action: PayloadAction<{ id: string; contentId: string }>
+    ) => {
+      const answers = getTargetAnswers(state, action.payload.id);
+      answers.forEach((answer) => {
+        if (answer.id === action.payload.contentId) {
+          answer.isChecked = true;
+        } else {
+          answer.isChecked = false;
+        }
+      });
+    },
     setCheckboxAnswer: (
       state: initialStateType[],
       action: PayloadAction<{ id: string; contentId: string }>
@@ -65,7 +85,7 @@ const answerSlice = createSlice({
         targetAnswerItem.isChecked = !targetAnswerItem.isChecked;
       }
     },
-    setCheckboxEtcAnswer: (
+    setEtcText: (
       state: initialStateType[],
       action: PayloadAction<{ id: string; contentId: string; text: string }>
     ) => {
@@ -80,8 +100,9 @@ const answerSlice = createSlice({
 export const {
   setInitialAnswer,
   setAnswer,
+  setRadioAnswer,
   setCheckboxAnswer,
-  setCheckboxEtcAnswer,
+  setEtcText,
 } = answerSlice.actions;
 
 export default answerSlice.reducer;

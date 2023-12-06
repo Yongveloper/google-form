@@ -6,10 +6,7 @@ import FormGroup from '@mui/material/FormGroup';
 import FormControlLabel from '@mui/material/FormControlLabel';
 import Checkbox from '@mui/material/Checkbox';
 import { useAppDispatch } from '@hooks/useAppDispatch';
-import {
-  setCheckboxAnswer,
-  setCheckboxEtcAnswer,
-} from '@store/slices/answerSlice';
+import { setCheckboxAnswer, setEtcText } from '@store/slices/answerSlice';
 
 const EtcInputContainer = styled.div`
   display: flex;
@@ -36,11 +33,10 @@ function CheckboxInput({ id, contents }: ICheckboxInputProps) {
   ) => {
     e.stopPropagation();
     setTextFieldValue(e.target.value);
-    dispatch(setCheckboxEtcAnswer({ id, contentId, text: e.target.value }));
+    dispatch(setEtcText({ id, contentId, text: e.target.value }));
   };
 
   const handleCheckboxInput = (e: React.ChangeEvent<HTMLInputElement>) => {
-    console.log(e.target.value);
     dispatch(setCheckboxAnswer({ id, contentId: e.target.value }));
   };
 

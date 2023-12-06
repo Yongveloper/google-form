@@ -33,7 +33,7 @@ function Header() {
   );
 
   return (
-    <AnswerFormContainer>
+    <AnswerFormContainer id="title">
       <PurpleLine />
       <Typography variant="h4" sx={{ mb: '6px' }}>
         {title}

@@ -1,7 +1,7 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { InputType, IQuestion } from '@store/types';
+import { inputType, InputType, IQuestion } from '@store/types';
 
-interface CheckboxAnswerType {
+interface MultipleAnswerType {
   id: string;
   text: string;
   isChecked: boolean;
@@ -11,35 +11,25 @@ interface initialStateType {
   id: string;
   title: string;
   inputType: InputType;
-  answers: string | CheckboxAnswerType[];
+  answers: string | MultipleAnswerType[];
   isRequired: boolean;
+  isError: boolean;
 }
 
 const initialState: initialStateType[] = [];
 
-const getTargetAnswers = (
+const getTargetQuestion = (
   state: initialStateType[],
   id: string
-): CheckboxAnswerType[] => {
-  return state.find((question) => question.id === id)
-    ?.answers as CheckboxAnswerType[];
-};
-
-const findTargetAnswerItem = (
-  state: initialStateType[],
-  { id, contentId }: { id: string; contentId: string }
-): CheckboxAnswerType => {
-  const targetAnswers = getTargetAnswers(state, id);
-  return targetAnswers.find(
-    (answer) => answer.id === contentId
-  ) as CheckboxAnswerType;
+): initialStateType => {
+  return state.find((question) => question.id === id) as initialStateType;
 };
 
 const answerSlice = createSlice({
-  name: 'question',
+  name: 'answers',
   initialState,
   reducers: {
-    setInitialAnswer: (state, action: PayloadAction<IQuestion[]>) => {
+    setInitialAnswer: (_, action: PayloadAction<IQuestion[]>) => {
       return action.payload.map((question) => ({
         id: question.id,
         title: question.title,
@@ -52,6 +42,7 @@ const answerSlice = createSlice({
             }))
           : '',
         isRequired: question.isRequired,
+        isError: false,
       }));
     },
     setSentenceAnswer: (
@@ -59,15 +50,24 @@ const answerSlice = createSlice({
       action: PayloadAction<{ id: string; text: string }>
     ) => {
       const { id, text } = action.payload;
-      const targetIndex = state.findIndex((question) => question.id === id);
+      const question = getTargetQuestion(state, id);
 
-      state[targetIndex].answers = text;
+      if (question.isError) {
+        question.isError = false;
+      }
+
+      question.answers = text;
     },
     setSingleInputSelectionAnswer: (
       state,
       action: PayloadAction<{ id: string; contentId: string }>
     ) => {
-      const answers = getTargetAnswers(state, action.payload.id);
+      const question = getTargetQuestion(state, action.payload.id);
+      const answers = question?.answers as MultipleAnswerType[];
+
+      if (question.isError) {
+        question.isError = false;
+      }
       answers.forEach((answer) => {
         if (answer.id === action.payload.contentId) {
           answer.isChecked = true;
@@ -80,19 +80,46 @@ const answerSlice = createSlice({
       state: initialStateType[],
       action: PayloadAction<{ id: string; contentId: string }>
     ) => {
-      const targetAnswerItem = findTargetAnswerItem(state, action.payload);
-      if (targetAnswerItem) {
-        targetAnswerItem.isChecked = !targetAnswerItem.isChecked;
+      const question = getTargetQuestion(state, action.payload.id);
+      const targetAnswers = question?.answers as MultipleAnswerType[];
+      const targetAnswerItem = targetAnswers.find(
+        (answer) => answer.id === action.payload.contentId
+      ) as MultipleAnswerType;
+
+      if (question.isError) {
+        question.isError = false;
       }
+
+      targetAnswerItem.isChecked = !targetAnswerItem.isChecked;
     },
     setEtcText: (
       state: initialStateType[],
       action: PayloadAction<{ id: string; contentId: string; text: string }>
     ) => {
-      const targetAnswerItem = findTargetAnswerItem(state, action.payload);
-      if (targetAnswerItem) {
-        targetAnswerItem.text = action.payload.text;
-      }
+      const question = getTargetQuestion(state, action.payload.id);
+      const targetAnswers = question?.answers as MultipleAnswerType[];
+      const targetAnswerItem = targetAnswers.find(
+        (answer) => answer.id === action.payload.id
+      ) as MultipleAnswerType;
+
+      targetAnswerItem.text = action.payload.text;
+    },
+    validateRequiredFields: (state: initialStateType[]) => {
+      state.forEach((question) => {
+        if (question.isRequired) {
+          if (
+            question.inputType === inputType.longAnswer ||
+            question.inputType === inputType.shortAnswer
+          ) {
+            question.isError = question.answers === '';
+          } else {
+            const targetAnswers = getTargetQuestion(state, question.id)
+              ?.answers as MultipleAnswerType[];
+            const isChecked = targetAnswers.some((answer) => answer.isChecked);
+            question.isError = !isChecked;
+          }
+        }
+      });
     },
   },
 });
@@ -103,6 +130,7 @@ export const {
   setSingleInputSelectionAnswer,
   setCheckboxAnswer,
   setEtcText,
+  validateRequiredFields,
 } = answerSlice.actions;
 
 export default answerSlice.reducer;

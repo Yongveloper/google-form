@@ -1,10 +1,13 @@
 import React, { useEffect } from 'react';
 import { useAppSelector } from '@hooks/useAppSelector';
-
 import AnswerFormHeader from '@components/Answer/AnswerFormHeader';
 import AnswerFormItem from '@components/Answer/AnswerFormItem';
 import { useAppDispatch } from '@hooks/useAppDispatch';
-import { setInitialAnswer } from '@store/slices/answerSlice';
+import {
+  setInitialAnswer,
+  validateRequiredFields,
+} from '@store/slices/answerSlice';
+import Button from '@mui/material/Button';
 
 function ViewForm() {
   const dispatch = useAppDispatch();
@@ -12,7 +15,10 @@ function ViewForm() {
   const questions = useAppSelector((state) => state.question).filter(
     (question) => question.id !== 'title'
   );
-  console.log('render');
+
+  const handleSubmit = () => {
+    dispatch(validateRequiredFields());
+  };
 
   useEffect(() => {
     dispatch(setInitialAnswer(questions));
@@ -31,6 +37,9 @@ function ViewForm() {
           contents={question.contents}
         />
       ))}
+      <Button variant="contained" onClick={handleSubmit}>
+        제출
+      </Button>
     </>
   );
 }

@@ -8,6 +8,7 @@ import {
   validateRequiredFields,
 } from '@store/slices/answerSlice';
 import Button from '@mui/material/Button';
+import Box from '@mui/system/Box';
 
 function ViewForm() {
   const dispatch = useAppDispatch();
@@ -16,12 +17,24 @@ function ViewForm() {
   const questions = useAppSelector((state) => state.question).filter(
     (question) => question.id !== 'title'
   );
+
   const isError = useAppSelector((state) =>
     state.answer.some((answer) => answer.isError)
   );
+
   const handleSubmit = () => {
     setSubmitting(true);
     dispatch(validateRequiredFields());
+  };
+
+  const handleInitAnswer = () => {
+    dispatch(setInitialAnswer(questions));
+  };
+
+  const handleInitAnswerBtnClick = () => {
+    if (confirm('정말 양식을 지우시겠습니까?')) {
+      window.location.reload();
+    }
   };
 
   useEffect(() => {
@@ -34,7 +47,7 @@ function ViewForm() {
   }, [isSubmitting, isError]);
 
   useEffect(() => {
-    dispatch(setInitialAnswer(questions));
+    handleInitAnswer();
   }, []);
 
   return (
@@ -50,9 +63,12 @@ function ViewForm() {
           contents={question.contents}
         />
       ))}
-      <Button variant="contained" onClick={handleSubmit}>
-        제출
-      </Button>
+      <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
+        <Button variant="contained" onClick={handleSubmit}>
+          제출
+        </Button>
+        <Button onClick={handleInitAnswerBtnClick}>양식 지우기</Button>
+      </Box>
     </>
   );
 }

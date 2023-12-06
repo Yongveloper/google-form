@@ -36,8 +36,6 @@ function Form() {
     );
   };
 
-  console.log(questions);
-
   return (
     <>
       <FormHeader />

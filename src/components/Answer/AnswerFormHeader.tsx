@@ -1,4 +1,3 @@
-import React from 'react';
 import styled from 'styled-components';
 import { inputType } from '@store/types';
 import { useAppSelector } from '@hooks/useAppSelector';

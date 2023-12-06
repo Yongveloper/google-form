@@ -26,7 +26,7 @@ const initialState: IQuestion[] = [
   },
 ];
 
-const createNewCard = (id: string) => {
+const createNewQuestion = (id: string) => {
   return {
     id,
     title: '',
@@ -52,7 +52,7 @@ const questionSlice = createSlice({
         question.isFocused = false;
       });
       const newId = String(Number(Date.now()) + 1);
-      state.push(createNewCard(newId));
+      state.push(createNewQuestion(newId));
     },
     setTitle: (state: IQuestion[], action: IAction) => {
       const targetIndex = state.findIndex(

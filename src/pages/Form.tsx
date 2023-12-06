@@ -1,10 +1,10 @@
 import React from 'react';
 import styled from 'styled-components';
 import { DragDropContext, Droppable, DropResult } from 'react-beautiful-dnd';
-import FormHeader from '@components/FormHeader';
+import FormHeader from '@components/Question/FormHeader';
 import { useAppSelector } from '@hooks/useAppSelector';
-import QuestionForm from '@components/QuestionForm';
-import Sidebar from '@components/Sidebar';
+import QuestionForm from '@components/Question/QuestionForm';
+import Sidebar from '@components/Question/Sidebar';
 import { useAppDispatch } from '@hooks/useAppDispatch';
 import { moveQuestion } from '@store/slices/questionSlice';
 import { inputType } from '@store/types';

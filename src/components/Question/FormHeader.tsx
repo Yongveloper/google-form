@@ -4,7 +4,7 @@ import styled from 'styled-components';
 import { useAppDispatch } from '@hooks/useAppDispatch';
 import { setContents, setTitle } from '@store/slices/questionSlice';
 import { useAppSelector } from '@hooks/useAppSelector';
-import { STextField } from './common/STextField.styles';
+import { STextField } from '../common/STextField.styles';
 import { inputType } from '@store/types';
 
 const PurpleLine = styled.div`

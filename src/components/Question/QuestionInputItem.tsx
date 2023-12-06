@@ -4,7 +4,7 @@ import IconButton from '@mui/material/IconButton';
 import ClearIcon from '@mui/icons-material/Clear';
 import RadioButtonUncheckedIcon from '@mui/icons-material/RadioButtonUnchecked';
 import CropSquareIcon from '@mui/icons-material/CropSquare';
-import { STextField } from './common/STextField.styles';
+import { STextField } from '../common/STextField.styles';
 import { IContents } from '@store/types';
 import { Draggable, DraggableProvided } from 'react-beautiful-dnd';
 import DragIndicatorIcon from '@mui/icons-material/DragIndicator';

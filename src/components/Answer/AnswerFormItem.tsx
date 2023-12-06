@@ -4,11 +4,10 @@ import Typography from '@mui/material/Typography';
 import AnswerFormContainer from './AnswerFormContainer';
 import { IContents } from '@store/types';
 import { inputType as InputTypeAlias } from '@store/types';
-import ShortAnswerInput from './Inputs/ShortAnswerInput';
-import LongAnswerInput from './Inputs/LongAnswerInput';
 import RadioInput from './Inputs/RadioInput';
 import CheckboxInput from './Inputs/CheckboxInput';
 import DropdownInput from './Inputs/DropdownInput';
+import AnswerTextFieldInput from './Inputs/AnswerTextFieldInput';
 
 const TitleContainer = styled.div`
   display: flex;
@@ -31,8 +30,6 @@ function AnswerFormItem({
   isRequired,
   contents,
 }: IAnswerFormItemProps) {
-  console.log(contents);
-
   return (
     <AnswerFormContainer>
       <TitleContainer>
@@ -43,8 +40,17 @@ function AnswerFormItem({
           </Typography>
         )}
       </TitleContainer>
-      {inputType === InputTypeAlias.shortAnswer && <ShortAnswerInput />}
-      {inputType === InputTypeAlias.longAnswer && <LongAnswerInput />}
+      {inputType === InputTypeAlias.shortAnswer && (
+        <AnswerTextFieldInput
+          id={id}
+          width="50%"
+          maxLength={15}
+          placeholder="단답형"
+        />
+      )}
+      {inputType === InputTypeAlias.longAnswer && (
+        <AnswerTextFieldInput id={id} width="80%" placeholder="단답형" />
+      )}
       {inputType === InputTypeAlias.radio && (
         <RadioInput id={id} contents={contents as IContents[]} />
       )}

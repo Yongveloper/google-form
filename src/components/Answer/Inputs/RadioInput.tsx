@@ -24,8 +24,6 @@ interface IRadioInputProps {
 }
 
 function RadioInput({ id, contents }: IRadioInputProps) {
-  console.log(contents);
-
   return (
     <FormControl style={{ width: '100%' }}>
       <RadioGroup

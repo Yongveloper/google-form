@@ -13,9 +13,11 @@ import {
 import storage from 'redux-persist/lib/storage';
 
 import questionSlice from './slices/questionSlice';
+import answerSlice from './slices/answerSlice';
 
 const reducers = combineReducers({
   question: questionSlice,
+  answer: answerSlice,
 });
 
 const persistConfig = {

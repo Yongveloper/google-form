@@ -22,8 +22,6 @@ interface ICheckboxInputProps {
 }
 
 function CheckboxInput({ id, contents }: ICheckboxInputProps) {
-  console.log(contents);
-
   return (
     <FormGroup style={{ width: '100%' }}>
       {contents.map((content) => (

@@ -10,8 +10,6 @@ interface IDropdownInputProps {
 }
 
 function DropdownInput({ id, contents }: IDropdownInputProps) {
-  console.log(contents);
-
   return (
     <FormControl style={{ width: '176px' }}>
       <Select labelId="demo-simple-select-label" id="demo-simple-select">

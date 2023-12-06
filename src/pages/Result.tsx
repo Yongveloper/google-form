@@ -15,6 +15,9 @@ function Result() {
   return (
     <>
       <ResultCard>
+        <Typography variant="h6" color="red" sx={{ mb: '8px' }}>
+          설문에 응해주셔서 감사합니다.
+        </Typography>
         <Typography variant="h4">{surveyTitle}</Typography>
         <Typography variant="subtitle1">{surveyDescription}</Typography>
       </ResultCard>

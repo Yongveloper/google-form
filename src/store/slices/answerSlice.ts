@@ -99,7 +99,7 @@ const answerSlice = createSlice({
       const question = getTargetQuestion(state, action.payload.id);
       const targetAnswers = question?.answers as MultipleAnswerType[];
       const targetAnswerItem = targetAnswers.find(
-        (answer) => answer.id === action.payload.id
+        (answer) => answer.id === action.payload.contentId
       ) as MultipleAnswerType;
 
       targetAnswerItem.text = action.payload.text;

@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useAppSelector } from '@hooks/useAppSelector';
 import AnswerFormHeader from '@components/Answer/AnswerFormHeader';
 import AnswerFormItem from '@components/Answer/AnswerFormItem';
@@ -11,14 +11,27 @@ import Button from '@mui/material/Button';
 
 function ViewForm() {
   const dispatch = useAppDispatch();
+  const [isSubmitting, setSubmitting] = useState(false);
 
   const questions = useAppSelector((state) => state.question).filter(
     (question) => question.id !== 'title'
   );
-
+  const isError = useAppSelector((state) =>
+    state.answer.some((answer) => answer.isError)
+  );
   const handleSubmit = () => {
+    setSubmitting(true);
     dispatch(validateRequiredFields());
   };
+
+  useEffect(() => {
+    if (isSubmitting) {
+      if (!isError) {
+        alert('제출 완료!');
+      }
+      setSubmitting(false);
+    }
+  }, [isSubmitting, isError]);
 
   useEffect(() => {
     dispatch(setInitialAnswer(questions));

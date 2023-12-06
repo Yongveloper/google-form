@@ -1,13 +1,13 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { inputType, InputType, IQuestion } from '@store/types';
 
-interface MultipleAnswerType {
+export interface MultipleAnswerType {
   id: string;
   text: string;
   isChecked: boolean;
 }
 
-interface initialStateType {
+export interface AnswerStateType {
   id: string;
   title: string;
   inputType: InputType;
@@ -16,13 +16,13 @@ interface initialStateType {
   isError: boolean;
 }
 
-const initialState: initialStateType[] = [];
+const initialState: AnswerStateType[] = [];
 
 const getTargetQuestion = (
-  state: initialStateType[],
+  state: AnswerStateType[],
   id: string
-): initialStateType => {
-  return state.find((question) => question.id === id) as initialStateType;
+): AnswerStateType => {
+  return state.find((question) => question.id === id) as AnswerStateType;
 };
 
 const answerSlice = createSlice({
@@ -46,7 +46,7 @@ const answerSlice = createSlice({
       }));
     },
     setSentenceAnswer: (
-      state: initialStateType[],
+      state: AnswerStateType[],
       action: PayloadAction<{ id: string; text: string }>
     ) => {
       const { id, text } = action.payload;
@@ -77,7 +77,7 @@ const answerSlice = createSlice({
       });
     },
     setCheckboxAnswer: (
-      state: initialStateType[],
+      state: AnswerStateType[],
       action: PayloadAction<{ id: string; contentId: string }>
     ) => {
       const question = getTargetQuestion(state, action.payload.id);
@@ -93,7 +93,7 @@ const answerSlice = createSlice({
       targetAnswerItem.isChecked = !targetAnswerItem.isChecked;
     },
     setEtcText: (
-      state: initialStateType[],
+      state: AnswerStateType[],
       action: PayloadAction<{ id: string; contentId: string; text: string }>
     ) => {
       const question = getTargetQuestion(state, action.payload.id);
@@ -104,7 +104,7 @@ const answerSlice = createSlice({
 
       targetAnswerItem.text = action.payload.text;
     },
-    validateRequiredFields: (state: initialStateType[]) => {
+    validateRequiredFields: (state: AnswerStateType[]) => {
       state.forEach((question) => {
         if (question.isRequired) {
           if (

@@ -11,7 +11,6 @@ function AnswerFormContainer({ id, children }: IAnswerFormContainerProps) {
   const isError = useAppSelector(
     (state) => state.answer.find((answer) => answer.id === id)?.isError ?? false
   );
-  console.log(id + ' ' + isError);
 
   return (
     <Card

@@ -5,7 +5,7 @@ import Select, { SelectChangeEvent } from '@mui/material/Select';
 import MenuItem from '@mui/material/MenuItem';
 import { useAppDispatch } from '@hooks/useAppDispatch';
 import { setSingleInputSelectionAnswer } from '@store/slices/answerSlice';
-
+import Divider from '@mui/material/Divider';
 interface IDropdownInputProps {
   id: string;
   contents: IContents[];
@@ -32,6 +32,7 @@ function DropdownInput({ id, contents }: IDropdownInputProps) {
         <MenuItem value="선택" disabled>
           선택
         </MenuItem>
+        <Divider />
         {contents.map((content) => (
           <MenuItem key={content.id} value={content.id}>
             {content.text}

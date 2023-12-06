@@ -9,14 +9,22 @@ import {
 } from '@store/slices/answerSlice';
 import Button from '@mui/material/Button';
 import Box from '@mui/system/Box';
+import { useNavigate } from 'react-router-dom';
 
 function ViewForm() {
   const dispatch = useAppDispatch();
+  const navigate = useNavigate();
   const [isSubmitting, setSubmitting] = useState(false);
 
   const questions = useAppSelector((state) => state.question).filter(
     (question) => question.id !== 'title'
   );
+
+  const title = useAppSelector((state) => state.question).find(
+    (question) => question.id === 'title'
+  );
+
+  const answers = useAppSelector((state) => state.answer);
 
   const isError = useAppSelector((state) =>
     state.answer.some((answer) => answer.isError)
@@ -39,8 +47,13 @@ function ViewForm() {
 
   useEffect(() => {
     if (isSubmitting) {
-      if (!isError) {
-        alert('제출 완료!');
+      if (!isError && confirm('응답을 제출하시겠습니까?')) {
+        navigate('/result', {
+          state: {
+            title: { title: title?.title, description: title?.contents },
+            answers,
+          },
+        });
       }
       setSubmitting(false);
     }

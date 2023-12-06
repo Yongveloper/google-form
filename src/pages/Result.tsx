@@ -1,6 +1,5 @@
-import React from 'react';
 import { useLocation } from 'react-router-dom';
-import { AnswerStateType, MultipleAnswerType } from '@store/slices/answerSlice';
+import { IAnswerStateType, IMultipleAnswerType } from '@store/types';
 import ResultCard from '@components/Result/ResultCard';
 import { inputType } from '@store/types';
 import Typography from '@mui/material/Typography';
@@ -9,7 +8,7 @@ import CheckTypeItem from '@components/Result/CheckTypeItem';
 
 function Result() {
   const location = useLocation();
-  const answers: AnswerStateType[] = location.state.answers;
+  const answers: IAnswerStateType[] = location.state.answers;
   const { title: surveyTitle, description: surveyDescription } =
     location.state.title;
 
@@ -34,13 +33,13 @@ function Result() {
           )}
           {answer.inputType === inputType.radio && (
             <CheckTypeItem
-              items={answer.answers as MultipleAnswerType[]}
+              items={answer.answers as IMultipleAnswerType[]}
               type={answer.inputType}
             />
           )}
           {answer.inputType === inputType.checkbox && (
             <CheckTypeItem
-              items={answer.answers as MultipleAnswerType[]}
+              items={answer.answers as IMultipleAnswerType[]}
               type={answer.inputType}
             />
           )}

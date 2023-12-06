@@ -1,28 +1,18 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { inputType, InputType, IQuestion } from '@store/types';
+import {
+  IAnswerStateType,
+  IMultipleAnswerType,
+  inputType,
+  IQuestion,
+} from '@store/types';
 
-export interface MultipleAnswerType {
-  id: string;
-  text: string;
-  isChecked: boolean;
-}
-
-export interface AnswerStateType {
-  id: string;
-  title: string;
-  inputType: InputType;
-  answers: string | MultipleAnswerType[];
-  isRequired: boolean;
-  isError: boolean;
-}
-
-const initialState: AnswerStateType[] = [];
+const initialState: IAnswerStateType[] = [];
 
 const getTargetQuestion = (
-  state: AnswerStateType[],
+  state: IAnswerStateType[],
   id: string
-): AnswerStateType => {
-  return state.find((question) => question.id === id) as AnswerStateType;
+): IAnswerStateType => {
+  return state.find((question) => question.id === id) as IAnswerStateType;
 };
 
 const answerSlice = createSlice({
@@ -46,7 +36,7 @@ const answerSlice = createSlice({
       }));
     },
     setSentenceAnswer: (
-      state: AnswerStateType[],
+      state: IAnswerStateType[],
       action: PayloadAction<{ id: string; text: string }>
     ) => {
       const { id, text } = action.payload;
@@ -63,7 +53,7 @@ const answerSlice = createSlice({
       action: PayloadAction<{ id: string; contentId: string }>
     ) => {
       const question = getTargetQuestion(state, action.payload.id);
-      const answers = question?.answers as MultipleAnswerType[];
+      const answers = question?.answers as IMultipleAnswerType[];
 
       if (question.isError) {
         question.isError = false;
@@ -77,14 +67,14 @@ const answerSlice = createSlice({
       });
     },
     setCheckboxAnswer: (
-      state: AnswerStateType[],
+      state: IAnswerStateType[],
       action: PayloadAction<{ id: string; contentId: string }>
     ) => {
       const question = getTargetQuestion(state, action.payload.id);
-      const targetAnswers = question?.answers as MultipleAnswerType[];
+      const targetAnswers = question?.answers as IMultipleAnswerType[];
       const targetAnswerItem = targetAnswers.find(
         (answer) => answer.id === action.payload.contentId
-      ) as MultipleAnswerType;
+      ) as IMultipleAnswerType;
 
       if (question.isError) {
         question.isError = false;
@@ -93,18 +83,18 @@ const answerSlice = createSlice({
       targetAnswerItem.isChecked = !targetAnswerItem.isChecked;
     },
     setEtcText: (
-      state: AnswerStateType[],
+      state: IAnswerStateType[],
       action: PayloadAction<{ id: string; contentId: string; text: string }>
     ) => {
       const question = getTargetQuestion(state, action.payload.id);
-      const targetAnswers = question?.answers as MultipleAnswerType[];
+      const targetAnswers = question?.answers as IMultipleAnswerType[];
       const targetAnswerItem = targetAnswers.find(
         (answer) => answer.id === action.payload.contentId
-      ) as MultipleAnswerType;
+      ) as IMultipleAnswerType;
 
       targetAnswerItem.text = action.payload.text;
     },
-    validateRequiredFields: (state: AnswerStateType[]) => {
+    validateRequiredFields: (state: IAnswerStateType[]) => {
       state.forEach((question) => {
         if (question.isRequired) {
           if (
@@ -114,7 +104,7 @@ const answerSlice = createSlice({
             question.isError = question.answers === '';
           } else {
             const targetAnswers = getTargetQuestion(state, question.id)
-              ?.answers as MultipleAnswerType[];
+              ?.answers as IMultipleAnswerType[];
             const isChecked = targetAnswers.some((answer) => answer.isChecked);
             question.isError = !isChecked;
           }

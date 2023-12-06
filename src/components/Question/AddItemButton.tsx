@@ -1,4 +1,3 @@
-import React from 'react';
 import styled from 'styled-components';
 import { inputType as InputTypeAlias } from '@store/types';
 import { Button } from '@mui/material';

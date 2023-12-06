@@ -1,4 +1,3 @@
-import React from 'react';
 import styled from 'styled-components';
 import { DragDropContext, Droppable, DropResult } from 'react-beautiful-dnd';
 import FormHeader from '@components/Question/FormHeader';

@@ -1,5 +1,4 @@
-import React from 'react';
-import { MultipleAnswerType } from '@store/slices/answerSlice';
+import { IMultipleAnswerType } from '@store/types';
 import Box from '@mui/system/Box';
 import FormControlLabel from '@mui/material/FormControlLabel';
 import Checkbox from '@mui/material/Checkbox';
@@ -7,7 +6,7 @@ import Radio from '@mui/material/Radio';
 import { inputType } from '@store/types';
 
 interface ICheckTypeItemProps {
-  items: MultipleAnswerType[];
+  items: IMultipleAnswerType[];
   type: 'checkbox' | 'radio';
 }
 

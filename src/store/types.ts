@@ -32,3 +32,18 @@ export interface IAction {
     contents: string | IContents[];
   };
 }
+
+export interface IMultipleAnswerType {
+  id: string;
+  text: string;
+  isChecked: boolean;
+}
+
+export interface IAnswerStateType {
+  id: string;
+  title: string;
+  inputType: InputType;
+  answers: string | IMultipleAnswerType[];
+  isRequired: boolean;
+  isError: boolean;
+}

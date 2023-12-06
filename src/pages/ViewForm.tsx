@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useAppSelector } from '@hooks/useAppSelector';
 import AnswerFormHeader from '@components/Answer/AnswerFormHeader';
 import AnswerFormItem from '@components/Answer/AnswerFormItem';

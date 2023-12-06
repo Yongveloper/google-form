@@ -1,4 +1,3 @@
-import React from 'react';
 import { addNewQuestion } from '@store/slices/questionSlice';
 import { useAppDispatch } from '@hooks/useAppDispatch';
 import IconButton from '@mui/material/IconButton';

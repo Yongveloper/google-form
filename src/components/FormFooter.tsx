@@ -4,6 +4,7 @@ import IconButton from '@mui/material/IconButton';
 import Switch from '@mui/material/Switch';
 import ContentCopyIcon from '@mui/icons-material/ContentCopy';
 import DeleteIcon from '@mui/icons-material/Delete';
+import Divider from '@mui/material/Divider';
 import { useAppDispatch } from '@hooks/useAppDispatch';
 import {
   copyQuestion,
@@ -17,15 +18,8 @@ const Container = styled.div`
   justify-content: end;
   height: 64px;
   border-top: 1px solid ${({ theme }) => theme.colors.grey};
-  padding: 0 24px;
+  padding: 8px 24px;
   margin-bottom: -24px;
-
-  .vertical-dived {
-    border-left: 1px solid rgb(218, 220, 224);
-    height: 32px;
-    margin: 0 16px;
-    width: 0;
-  }
 `;
 
 interface IFormFooterProps {
@@ -56,7 +50,7 @@ function FormFooter({ id, isRequired }: IFormFooterProps) {
       <IconButton onClick={handleDeleteQuestion}>
         <DeleteIcon />
       </IconButton>
-      <div className="vertical-dived" />
+      <Divider orientation="vertical" sx={{ mr: '8px' }} />
       <span>필수</span>
       <Switch
         inputProps={{ 'aria-label': 'Require toggle' }}

@@ -54,7 +54,7 @@ const answerSlice = createSlice({
         isRequired: question.isRequired,
       }));
     },
-    setAnswer: (
+    setSentenceAnswer: (
       state: initialStateType[],
       action: PayloadAction<{ id: string; text: string }>
     ) => {
@@ -63,7 +63,7 @@ const answerSlice = createSlice({
 
       state[targetIndex].answers = text;
     },
-    setRadioAnswer: (
+    setSingleInputSelectionAnswer: (
       state,
       action: PayloadAction<{ id: string; contentId: string }>
     ) => {
@@ -99,8 +99,8 @@ const answerSlice = createSlice({
 
 export const {
   setInitialAnswer,
-  setAnswer,
-  setRadioAnswer,
+  setSentenceAnswer,
+  setSingleInputSelectionAnswer,
   setCheckboxAnswer,
   setEtcText,
 } = answerSlice.actions;

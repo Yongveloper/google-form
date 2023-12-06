@@ -7,7 +7,10 @@ import FormControl from '@mui/material/FormControl';
 import { IContents } from '@store/types';
 import { STextField } from '@components/common/STextField.styles';
 import { useAppDispatch } from '@hooks/useAppDispatch';
-import { setEtcText, setRadioAnswer } from '@store/slices/answerSlice';
+import {
+  setEtcText,
+  setSingleInputSelectionAnswer,
+} from '@store/slices/answerSlice';
 
 const EtcInputContainer = styled.div`
   display: flex;
@@ -40,7 +43,7 @@ function RadioInput({ id, contents }: IRadioInputProps) {
 
   const handleRadioInput = (e: React.ChangeEvent<HTMLInputElement>) => {
     setSelectedValue(e.target.value);
-    dispatch(setRadioAnswer({ id, contentId: e.target.value }));
+    dispatch(setSingleInputSelectionAnswer({ id, contentId: e.target.value }));
   };
 
   return (

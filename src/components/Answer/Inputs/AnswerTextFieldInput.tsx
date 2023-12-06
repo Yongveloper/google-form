@@ -1,7 +1,7 @@
 import React from 'react';
 import { STextField } from '@components/common/STextField.styles';
 import { useAppDispatch } from '@hooks/useAppDispatch';
-import { setAnswer } from '@store/slices/answerSlice';
+import { setSentenceAnswer } from '@store/slices/answerSlice';
 import { useAppSelector } from '@hooks/useAppSelector';
 
 interface IAnswerInputProps {
@@ -20,7 +20,7 @@ function AnswerInput({ id, width, maxLength, placeholder }: IAnswerInputProps) {
     ) ?? '';
 
   const handleAnswer = (e: React.ChangeEvent<HTMLInputElement>) => {
-    dispatch(setAnswer({ id, text: e.target.value }));
+    dispatch(setSentenceAnswer({ id, text: e.target.value }));
   };
 
   return (

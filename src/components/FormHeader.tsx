@@ -5,6 +5,7 @@ import { useAppDispatch } from '@hooks/useAppDispatch';
 import { setContents, setTitle } from '@store/slices/questionSlice';
 import { useAppSelector } from '@hooks/useAppSelector';
 import { STextField } from './common/STextField.styles';
+import { inputType } from '@store/types';
 
 const PurpleLine = styled.div`
   width: 100%;
@@ -19,20 +20,22 @@ function FormHeader() {
   const dispatch = useAppDispatch();
 
   const title = useAppSelector(
-    (state) => state.question.find((question) => question.id === 'title')?.title
+    (state) =>
+      state.question.find((question) => question.id === inputType.title)?.title
   );
 
   const contents = useAppSelector(
     (state) =>
-      state.question.find((question) => question.id === 'title')?.contents
+      state.question.find((question) => question.id === inputType.title)
+        ?.contents
   );
 
   const handleTitle = (e: React.ChangeEvent<HTMLInputElement>) => {
-    dispatch(setTitle({ id: 'title', contents: e.target.value }));
+    dispatch(setTitle({ id: inputType.title, contents: e.target.value }));
   };
 
   const handleDescription = (e: React.ChangeEvent<HTMLInputElement>) => {
-    dispatch(setContents({ id: 'title', contents: e.target.value }));
+    dispatch(setContents({ id: inputType.title, contents: e.target.value }));
   };
 
   return (

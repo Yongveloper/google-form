@@ -12,6 +12,7 @@ import NotesIcon from '@mui/icons-material/Notes';
 import CheckBoxOutlinedIcon from '@mui/icons-material/CheckBoxOutlined';
 import ArrowDropDownCircleOutlinedIcon from '@mui/icons-material/ArrowDropDownCircleOutlined';
 import Divider from '@mui/material/Divider';
+import { inputType as InputTypeAlias } from '@store/types';
 
 const ItemContainer = styled.div`
   display: flex;
@@ -34,33 +35,33 @@ function InputTypeSelect({ id, inputType }: IInputTypeSelectProps) {
   return (
     <FormControl sx={{ minWidth: 208 }}>
       <Select value={inputType} onChange={handleInputType}>
-        <MenuItem value="shortAnswer">
+        <MenuItem value={InputTypeAlias.shortAnswer}>
           <ItemContainer>
             <ShortTextIcon style={{ color: 'grey' }} />
             단답형
           </ItemContainer>
         </MenuItem>
 
-        <MenuItem value="longAnswer">
+        <MenuItem value={InputTypeAlias.longAnswer}>
           <ItemContainer>
             <NotesIcon style={{ color: 'grey' }} />
             장문형
           </ItemContainer>
         </MenuItem>
         <Divider />
-        <MenuItem value="radio">
+        <MenuItem value={InputTypeAlias.radio}>
           <ItemContainer>
             <RadioButtonCheckedIcon style={{ color: 'grey' }} />
             객관식 질문
           </ItemContainer>
         </MenuItem>
-        <MenuItem value="checkbox">
+        <MenuItem value={InputTypeAlias.checkbox}>
           <ItemContainer>
             <CheckBoxOutlinedIcon style={{ color: 'grey' }} />
             체크박스
           </ItemContainer>
         </MenuItem>
-        <MenuItem value="dropdown">
+        <MenuItem value={InputTypeAlias.dropdown}>
           <ItemContainer>
             <ArrowDropDownCircleOutlinedIcon style={{ color: 'grey' }} />
             드롭다운

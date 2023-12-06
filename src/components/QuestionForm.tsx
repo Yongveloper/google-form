@@ -24,6 +24,7 @@ import InputTypeSelect from './InputTypeSelect';
 import QuestionInputItem from './QuestionInputItem';
 import AddItemButton from './AddItemButton';
 import FormFooter from './FormFooter';
+import { inputType as InputTypeAlias } from '@store/types';
 
 const TopContainer = styled.div`
   display: flex;
@@ -230,8 +231,8 @@ function QuestionForm({ id, index }: QuestionFormProps) {
                   </DragDropContext>
                 )}
                 {isFocused &&
-                  inputType !== 'shortAnswer' &&
-                  inputType !== 'longAnswer' && (
+                  inputType !== InputTypeAlias.shortAnswer &&
+                  inputType !== InputTypeAlias.longAnswer && (
                     <AddItemButton
                       inputType={inputType}
                       contentsLength={

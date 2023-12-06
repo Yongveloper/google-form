@@ -1,5 +1,11 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { IAction, IContents, InputType, IQuestion } from '@store/types';
+import {
+  IAction,
+  IContents,
+  inputType,
+  InputType,
+  IQuestion,
+} from '@store/types';
 
 const initialState: IQuestion[] = [
   {
@@ -13,7 +19,7 @@ const initialState: IQuestion[] = [
   {
     id: String(Date.now()),
     title: '질문',
-    inputType: 'radio',
+    inputType: inputType.radio,
     contents: [
       {
         id: String(Date.now() + 1),
@@ -30,7 +36,7 @@ const createNewQuestion = (id: string) => {
   return {
     id,
     title: '',
-    inputType: 'radio',
+    inputType: inputType.radio,
     contents: [
       {
         id: String(Number(id) + 1),
@@ -78,20 +84,20 @@ const questionSlice = createSlice({
       );
       // 짧은답변, 긴답변으로 변경시 contents는 빈 텍스트로 초기화
       if (
-        action.payload.contents === 'shortAnswer' ||
-        action.payload.contents === 'longAnswer'
+        action.payload.contents === inputType.shortAnswer ||
+        action.payload.contents === inputType.longAnswer
       ) {
         state[targetIndex].contents = '';
       }
       // 짧은답변, 긴답변에서 라디오, 체크박스로 변경시 옵션 1 추가
       if (
-        state[targetIndex].inputType === 'shortAnswer' ||
-        state[targetIndex].inputType === 'longAnswer'
+        state[targetIndex].inputType === inputType.shortAnswer ||
+        state[targetIndex].inputType === inputType.longAnswer
       ) {
         if (
-          action.payload.contents === 'radio' ||
-          action.payload.contents === 'checkbox' ||
-          action.payload.contents === 'dropdown'
+          action.payload.contents === inputType.radio ||
+          action.payload.contents === inputType.checkbox ||
+          action.payload.contents === inputType.dropdown
         ) {
           state[targetIndex].contents = [
             {
@@ -103,7 +109,7 @@ const questionSlice = createSlice({
         }
       }
       // 드롭다운에서 라디오, 체크박스로 변경시 마지막에 etc가 있으면 삭제
-      if (action.payload.contents === 'dropdown') {
+      if (action.payload.contents === inputType.dropdown) {
         const contents = state[targetIndex].contents as IContents[];
         if (contents[contents.length - 1].isEtc) {
           contents.pop();
@@ -226,7 +232,6 @@ const questionSlice = createSlice({
         ?.contents as IContents[];
       const [removed] = contents.splice(sourceIndex, 1);
       contents.splice(destinationIndex, 0, removed);
-      console.log('render');
     },
   },
 });

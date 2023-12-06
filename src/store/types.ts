@@ -1,11 +1,14 @@
-export type InputType =
-  | 'title'
-  | 'description'
-  | 'radio'
-  | 'checkbox'
-  | 'dropdown'
-  | 'shortAnswer'
-  | 'longAnswer';
+export const inputType = {
+  title: 'title',
+  description: 'description',
+  radio: 'radio',
+  checkbox: 'checkbox',
+  dropdown: 'dropdown',
+  shortAnswer: 'shortAnswer',
+  longAnswer: 'longAnswer',
+} as const;
+
+export type InputType = (typeof inputType)[keyof typeof inputType];
 
 export interface IContents {
   id: string;

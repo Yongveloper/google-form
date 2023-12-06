@@ -1,5 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
+import { inputType as InputTypeAlias } from '@store/types';
 import { Button } from '@mui/material';
 import RadioButtonUncheckedIcon from '@mui/icons-material/RadioButtonUnchecked';
 import CropSquareIcon from '@mui/icons-material/CropSquare';
@@ -37,22 +38,28 @@ function AddItemButton({
 }: IAddItemButtonProps) {
   return (
     <AddItemBtnContainer>
-      {inputType === 'radio' && (
+      {inputType === InputTypeAlias.radio && (
         <RadioButtonUncheckedIcon style={{ color: 'grey' }} />
       )}
-      {inputType === 'checkbox' && <CropSquareIcon style={{ color: 'grey' }} />}
-      {inputType === 'dropdown' && <span>{contentsLength + 1}</span>}
+      {inputType === InputTypeAlias.checkbox && (
+        <CropSquareIcon style={{ color: 'grey' }} />
+      )}
+      {inputType === InputTypeAlias.dropdown && (
+        <span>{contentsLength + 1}</span>
+      )}
       <span className="AddItemBtn" onClick={handleAddInputItem}>
         옵션 추가
       </span>
-      {(inputType === 'radio' || inputType === 'checkbox') && !isExistEtc() && (
-        <>
-          <span>또는</span>
-          <Button sx={{ pt: '10px' }} onClick={handleAddInputEtcItem}>
-            '기타' 추가
-          </Button>
-        </>
-      )}
+      {(inputType === InputTypeAlias.radio ||
+        inputType === InputTypeAlias.checkbox) &&
+        !isExistEtc() && (
+          <>
+            <span>또는</span>
+            <Button sx={{ pt: '10px' }} onClick={handleAddInputEtcItem}>
+              '기타' 추가
+            </Button>
+          </>
+        )}
     </AddItemBtnContainer>
   );
 }

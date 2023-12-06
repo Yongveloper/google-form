@@ -8,6 +8,7 @@ import { STextField } from './common/STextField.styles';
 import { IContents } from '@store/types';
 import { Draggable, DraggableProvided } from 'react-beautiful-dnd';
 import DragIndicatorIcon from '@mui/icons-material/DragIndicator';
+import { inputType as InputTypeAlias } from '@store/types';
 
 const SDragIndicatorIcon = styled(DragIndicatorIcon)`
   opacity: 0;
@@ -73,13 +74,13 @@ function QuestionInputItem({
             >
               <SDragIndicatorIcon />
             </DragButtonSection>
-            {inputType === 'radio' && (
+            {inputType === InputTypeAlias.radio && (
               <RadioButtonUncheckedIcon style={{ color: 'grey' }} />
             )}
-            {inputType === 'checkbox' && (
+            {inputType === InputTypeAlias.checkbox && (
               <CropSquareIcon style={{ color: 'grey' }} />
             )}
-            {inputType === 'dropdown' && <span>{index + 1}</span>}
+            {inputType === InputTypeAlias.dropdown && <span>{index + 1}</span>}
             {content.isEtc ? (
               <STextField
                 id="standard-basic"

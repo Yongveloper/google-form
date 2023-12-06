@@ -7,6 +7,7 @@ import QuestionForm from '@components/QuestionForm';
 import Sidebar from '@components/Sidebar';
 import { useAppDispatch } from '@hooks/useAppDispatch';
 import { moveQuestion } from '@store/slices/questionSlice';
+import { inputType } from '@store/types';
 
 const Container = styled.div`
   position: relative;
@@ -27,7 +28,7 @@ const Container = styled.div`
 
 function Form() {
   const questions = useAppSelector((state) => state.question).filter(
-    (question) => question.id !== 'title'
+    (question) => question.id !== inputType.title
   );
 
   const dispatch = useAppDispatch();

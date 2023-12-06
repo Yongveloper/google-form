@@ -1,4 +1,5 @@
 import React from 'react';
+import { useLocation } from 'react-router-dom';
 import styled from 'styled-components';
 import { setFocused } from '@store/slices/questionSlice';
 import { Card } from '@mui/material';
@@ -28,7 +29,11 @@ function FormContainer({ id, children }: IFormContainerProps) {
     (state) => state.question.find((question) => question.id === id)?.isFocused
   );
 
+  const { pathname } = useLocation();
+  const isRootRoute = pathname === '/';
+
   const handleFocus = () => {
+    if (!isRootRoute) return;
     if (isFocused) return;
     dispatch(setFocused({ id }));
   };
@@ -45,7 +50,7 @@ function FormContainer({ id, children }: IFormContainerProps) {
         position: 'relative',
       }}
     >
-      {isFocused && <BlueLine />}
+      {isRootRoute && isFocused && <BlueLine />}
       {children}
     </Card>
   );

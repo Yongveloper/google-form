@@ -14,6 +14,10 @@ function Sidebar() {
     dispatch(addNewQuestion());
   };
 
+  const handlePreview = () => {
+    window.open('/viewform', '_blank');
+  };
+
   return (
     <Card
       sx={{
@@ -31,7 +35,7 @@ function Sidebar() {
         </IconButton>
       </Tooltip>
       <Tooltip title="미리보기" placement="right">
-        <IconButton>
+        <IconButton onClick={handlePreview}>
           <VisibilityIcon />
         </IconButton>
       </Tooltip>

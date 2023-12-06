@@ -43,6 +43,7 @@ function RadioInput({ id, contents }: IRadioInputProps) {
 
   const handleRadioInput = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { value } = e.target;
+
     if (value === ETC) {
       // '기타'를 체크했다면 '기타'의 텍스트필드에 입력한 값을 dispatch
       setSelectedValue(ETC);

@@ -9,21 +9,11 @@ import { useAppDispatch } from '@hooks/useAppDispatch';
 import { moveQuestion } from '@store/slices/questionSlice';
 import { inputType } from '@store/types';
 
-const Container = styled.div`
-  position: relative;
+const QuestionList = styled.div`
+  width: 100%;
   display: flex;
-  margin: 0 auto;
-  max-width: 768px;
-  flex-direction: column;
   gap: 12px;
-  padding: 38px 0;
-
-  .question-list {
-    width: 100%;
-    display: flex;
-    gap: 12px;
-    flex-direction: column;
-  }
+  flex-direction: column;
 `;
 
 function Form() {
@@ -49,7 +39,7 @@ function Form() {
   console.log(questions);
 
   return (
-    <Container>
+    <>
       <FormHeader />
       <DragDropContext onDragEnd={handleOnDragEnd}>
         <Droppable
@@ -58,7 +48,7 @@ function Form() {
           direction="vertical"
         >
           {(provided) => (
-            <div
+            <QuestionList
               className="question-list"
               {...provided.droppableProps}
               ref={provided.innerRef}
@@ -71,12 +61,12 @@ function Form() {
                 />
               ))}
               {provided.placeholder}
-            </div>
+            </QuestionList>
           )}
         </Droppable>
       </DragDropContext>
       <Sidebar />
-    </Container>
+    </>
   );
 }
 

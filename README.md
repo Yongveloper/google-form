@@ -2,6 +2,9 @@
 
 클라썸 과제 1 - 구글 설문 조사 만들기
 
+- 배포: https://classum-yhj-google-form.netlify.app/
+  - 공개 저장소에 업로드 하면 안 된다는 주의사항이 있어서 공개 저장소 연결 없이 간편하게 배포할 수 있는 **Netlify Drop**을 이용해 배포했습니다.
+
 ## 필수 스택 외 사용 라이브러리
 
 ### MUI(Material-UI)

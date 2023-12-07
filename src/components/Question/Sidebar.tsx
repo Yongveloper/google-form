@@ -1,4 +1,5 @@
 import { addNewQuestion } from '@store/slices/questionSlice';
+import { useNavigate } from 'react-router-dom';
 import { useAppDispatch } from '@hooks/useAppDispatch';
 import IconButton from '@mui/material/IconButton';
 import AddCircleOutlineIcon from '@mui/icons-material/AddCircleOutline';
@@ -8,13 +9,14 @@ import Tooltip from '@mui/material/Tooltip';
 
 function Sidebar() {
   const dispatch = useAppDispatch();
+  const navigate = useNavigate();
 
   const handleAddNewQuestion = () => {
     dispatch(addNewQuestion());
   };
 
   const handlePreview = () => {
-    window.open('/viewform', '_blank');
+    navigate('/viewform');
   };
 
   return (

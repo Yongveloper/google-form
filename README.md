@@ -1,30 +1,58 @@
-# React + TypeScript + Vite
+## 프로젝트 개요
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+클라썸 과제 1 - 구글 설문 조사 만들기
 
-Currently, two official plugins are available:
+## 필수 스택 외 사용 라이브러리
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+### MUI(Material-UI)
 
-## Expanding the ESLint configuration
+Material-UI는 구글의 Material Design 스타일 가이드를 따르는 컴포넌트 라이브러리로, 구글 설문 조사와 유사한 디자인을 쉽게 구현할 수 있기 때문에 선택했습니다.
 
-If you are developing a production application, we recommend updating the configuration to enable type aware lint rules:
+### styled-components
 
-- Configure the top-level `parserOptions` property like this:
+MUI와 서로 잘 통합되어 있고, MUI 컴포넌트에 styled-components를 적용하여 커스텀 스타일링을 쉽게 할 수 있도록 styled-components를 선택하여 프로젝트를 진행하였습니다.
 
-```js
-export default {
-  // other rules...
-  parserOptions: {
-    ecmaVersion: 'latest',
-    sourceType: 'module',
-    project: ['./tsconfig.json', './tsconfig.node.json'],
-    tsconfigRootDir: __dirname,
-  },
-}
+### react-beautiful-dnd
+
+필수 구현 사항 중 드래그 앤 드롭을 쉽게 구현할 수 있도록 하기 위함과
+다른 dnd 라이브러리에 비해 react-beautiful-dnd의 API가 직관적이어서 빠르게 적용할 수 있다고 느끼게 되어 선택했습니다.
+
+## 기능 구현
+
+### 필수 구현 사항 및 완료
+
+- 설문지 제목 추가, 편집
+- 설문지 설명 추가, 편집
+- 질문을 추가하면 질문이 추가
+  - 단답형
+  - 장문형
+  - 객관식 질문
+  - 체크박스
+  - 드롭다운
+- 질문 복사 기능
+- 질문 삭제 기능
+- 필수 옵션 설정 기능
+- 질문 및 질문의 옵션 순서 변경(DnD)
+- **미리 보기** 기능
+  - 제출 버튼 눌렀을 경우 사용자가 작성한 데이터를 보여 줍니다.
+
+### 추가 구현 사항
+
+- 브라우저 새고로침 시 질문 데이터 유지
+  - `redux-persist` 활용해서 구현 했습니다.
+- 양식 지우기
+  - 양식 지우기 버튼 클릭시 `window.reload()`로 지워지도록 했습니다.
+
+## 설치 및 실행 방법
+
+### 설치
+
+```
+npm i
 ```
 
-- Replace `plugin:@typescript-eslint/recommended` to `plugin:@typescript-eslint/recommended-type-checked` or `plugin:@typescript-eslint/strict-type-checked`
-- Optionally add `plugin:@typescript-eslint/stylistic-type-checked`
-- Install [eslint-plugin-react](https://github.com/jsx-eslint/eslint-plugin-react) and add `plugin:react/recommended` & `plugin:react/jsx-runtime` to the `extends` list
+### 실행
+
+```
+npm run dev
+```

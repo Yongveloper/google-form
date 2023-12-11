@@ -17,13 +17,12 @@ import {
 import Box from '@mui/system/Box';
 import DragIndicatorIcon from '@mui/icons-material/DragIndicator';
 import FormContainer from './FormContainer';
-import { useAppSelector } from '@hooks/useAppSelector';
 import { useAppDispatch } from '@hooks/useAppDispatch';
 import InputTypeSelect from './InputTypeSelect';
 import QuestionInputItem from './QuestionInputItem';
 import AddItemButton from './AddItemButton';
 import FormFooter from './FormFooter';
-import { inputType as InputTypeAlias } from '@store/types';
+import { IQuestion, inputType as InputTypeAlias } from '@store/types';
 import TextField from '@mui/material/TextField';
 
 const TopContainer = styled.div`
@@ -50,36 +49,13 @@ const DndButtonSection = styled.div`
 `;
 
 interface QuestionFormProps {
-  id: string;
   index: number;
+  question: IQuestion;
 }
 
-function QuestionForm({ id, index }: QuestionFormProps) {
-  const isFocused = useAppSelector(
-    (state) =>
-      state.question.find((question) => question.id === id)
-        ?.isFocused as boolean
-  );
-
-  const inputType = useAppSelector(
-    (state) =>
-      state.question.find((question) => question.id === id)?.inputType as string
-  );
-
-  const title = useAppSelector(
-    (state) =>
-      state.question.find((question) => question.id === id)?.title as string
-  );
-
-  const contents = useAppSelector(
-    (state) => state.question.find((question) => question.id === id)?.contents
-  );
-
-  const isRequired = useAppSelector(
-    (state) =>
-      state.question.find((question) => question.id === id)
-        ?.isRequired as boolean
-  );
+function QuestionForm({ index, question }: QuestionFormProps) {
+  const { id, isFocused, inputType, title, contents, isRequired } = question;
+  console.log('render QuestionForm');
 
   const dispatch = useAppDispatch();
 

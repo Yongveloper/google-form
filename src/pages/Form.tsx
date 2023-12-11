@@ -53,7 +53,7 @@ function Form() {
                 <QuestionForm
                   key={question.id}
                   index={index}
-                  id={question.id}
+                  question={question}
                 />
               ))}
               {provided.placeholder}

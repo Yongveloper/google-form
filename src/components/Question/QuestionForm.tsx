@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useCallback } from 'react';
 import styled from 'styled-components';
 import {
   DragDropContext,
@@ -55,27 +55,29 @@ interface QuestionFormProps {
 
 function QuestionForm({ index, question }: QuestionFormProps) {
   const { id, isFocused, inputType, title, contents, isRequired } = question;
-  console.log('render QuestionForm');
 
   const dispatch = useAppDispatch();
 
-  const isExistEtc = () => {
+  const isExistEtc = useCallback(() => {
     if (Array.isArray(contents)) {
       return contents.some((content) => content.isEtc);
     }
     return false;
-  };
+  }, [contents]);
 
   const handleTitle = (e: React.ChangeEvent<HTMLInputElement>) => {
     dispatch(setTitle({ id, contents: e.target.value }));
   };
 
-  const handleChangeContents = (
-    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
-    contentId: string
-  ) => {
-    dispatch(changeItemContent({ id, contentId, text: e.target.value }));
-  };
+  const handleChangeContents = useCallback(
+    (
+      e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
+      contentId: string
+    ) => {
+      dispatch(changeItemContent({ id, contentId, text: e.target.value }));
+    },
+    [id, dispatch]
+  );
 
   const handleAddInputItem = () => {
     if (Array.isArray(contents)) {
@@ -103,9 +105,12 @@ function QuestionForm({ index, question }: QuestionFormProps) {
     }
   };
 
-  const handleDeleteInputItem = (contentId: string) => {
-    dispatch(deleteInputItem({ id, contentId }));
-  };
+  const handleDeleteInputItem = useCallback(
+    (contentId: string) => {
+      dispatch(deleteInputItem({ id, contentId }));
+    },
+    [id, dispatch]
+  );
 
   const handleOnItemDragEnd = ({ source, destination }: DropResult) => {
     if (!destination) return;

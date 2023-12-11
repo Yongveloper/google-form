@@ -116,4 +116,4 @@ function QuestionInputItem({
   );
 }
 
-export default QuestionInputItem;
+export default React.memo(QuestionInputItem);

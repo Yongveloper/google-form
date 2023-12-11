@@ -248,4 +248,4 @@ function QuestionForm({ id, index }: QuestionFormProps) {
   );
 }
 
-export default QuestionForm;
+export default React.memo(QuestionForm);

@@ -19,7 +19,6 @@ function Form() {
   const questions = useAppSelector((state) => state.question).filter(
     (question) => question.id !== inputType.title
   );
-
   const dispatch = useAppDispatch();
 
   const handleOnDragEnd = ({ destination, source }: DropResult) => {

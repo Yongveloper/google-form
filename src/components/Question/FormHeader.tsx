@@ -19,16 +19,12 @@ const PurpleLine = styled.div`
 function FormHeader() {
   const dispatch = useAppDispatch();
 
-  const title = useAppSelector(
-    (state) =>
-      state.question.find((question) => question.id === inputType.title)?.title
+  const titleQuestion = useAppSelector((state) =>
+    state.question.find((question) => question.id === inputType.title)
   );
 
-  const contents = useAppSelector(
-    (state) =>
-      state.question.find((question) => question.id === inputType.title)
-        ?.contents
-  );
+  const title = titleQuestion?.title;
+  const contents = titleQuestion?.contents;
 
   const handleTitle = (e: React.ChangeEvent<HTMLInputElement>) => {
     dispatch(setTitle({ id: inputType.title, contents: e.target.value }));
@@ -64,4 +60,4 @@ function FormHeader() {
   );
 }
 
-export default FormHeader;
+export default React.memo(FormHeader);

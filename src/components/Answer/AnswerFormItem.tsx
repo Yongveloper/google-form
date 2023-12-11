@@ -1,3 +1,4 @@
+import React from 'react';
 import styled from 'styled-components';
 import Typography from '@mui/material/Typography';
 import AnswerFormContainer from './AnswerFormContainer';
@@ -63,4 +64,4 @@ function AnswerFormItem({
   );
 }
 
-export default AnswerFormItem;
+export default React.memo(AnswerFormItem);

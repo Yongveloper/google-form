@@ -15,17 +15,13 @@ const PurpleLine = styled.div`
   left: 0;
 `;
 
-function Header() {
-  const title = useAppSelector(
-    (state) =>
-      state.question.find((question) => question.id === inputType.title)?.title
+function AnswerFormHeader() {
+  const titleQuestion = useAppSelector((state) =>
+    state.question.find((question) => question.id === inputType.title)
   );
 
-  const description = useAppSelector(
-    (state) =>
-      state.question.find((question) => question.id === inputType.title)
-        ?.contents as string
-  );
+  const title = titleQuestion?.title;
+  const description = titleQuestion?.contents as string;
 
   const isExistRequired = useAppSelector((state) =>
     state.question.some((question) => question.isRequired)
@@ -55,4 +51,4 @@ function Header() {
   );
 }
 
-export default Header;
+export default AnswerFormHeader;

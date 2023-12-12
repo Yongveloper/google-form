@@ -29,6 +29,7 @@ const answerSlice = createSlice({
               id: content.id,
               text: content.text,
               isChecked: false,
+              isEtc: content.isEtc,
             }))
           : '',
         isRequired: question.isRequired,

@@ -37,6 +37,7 @@ export interface IMultipleAnswerType {
   id: string;
   text: string;
   isChecked: boolean;
+  isEtc: boolean;
 }
 
 export interface IAnswerStateType {

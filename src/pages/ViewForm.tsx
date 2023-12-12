@@ -41,7 +41,7 @@ function ViewForm() {
 
   const handleInitAnswerBtnClick = () => {
     if (confirm('정말 양식을 지우시겠습니까?')) {
-      window.location.reload();
+      handleInitAnswer();
     }
   };
 
@@ -66,14 +66,14 @@ function ViewForm() {
   return (
     <>
       <AnswerFormHeader />
-      {questions.map((question) => (
+      {answers.map((answer) => (
         <AnswerFormItem
-          key={question.id}
-          id={question.id}
-          title={question.title}
-          inputType={question.inputType}
-          isRequired={question.isRequired}
-          contents={question.contents}
+          key={answer.id}
+          id={answer.id}
+          title={answer.title}
+          inputType={answer.inputType}
+          isRequired={answer.isRequired}
+          answers={answer.answers}
         />
       ))}
       <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>

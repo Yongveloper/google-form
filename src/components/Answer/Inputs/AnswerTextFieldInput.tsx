@@ -11,7 +11,12 @@ interface IAnswerInputProps {
   placeholder: string;
 }
 
-function AnswerInput({ id, width, maxLength, placeholder }: IAnswerInputProps) {
+function AnswerTextFieldInput({
+  id,
+  width,
+  maxLength,
+  placeholder,
+}: IAnswerInputProps) {
   const dispatch = useAppDispatch();
 
   const value =
@@ -37,4 +42,4 @@ function AnswerInput({ id, width, maxLength, placeholder }: IAnswerInputProps) {
   );
 }
 
-export default AnswerInput;
+export default AnswerTextFieldInput;

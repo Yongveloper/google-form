@@ -3,23 +3,19 @@ import Radio from '@mui/material/Radio';
 import RadioGroup from '@mui/material/RadioGroup';
 import FormControlLabel from '@mui/material/FormControlLabel';
 import FormControl from '@mui/material/FormControl';
-import { IContents } from '@store/types';
+import { IMultipleAnswerType } from '@store/types';
 import { useAppDispatch } from '@hooks/useAppDispatch';
 import { setSingleInputSelectionAnswer } from '@store/slices/answerSlice';
 import EtcInput from './EtcInput';
-import { useEtcAnswerInput } from '@hooks/useEtcAnswerInput';
 
 interface IRadioInputProps {
   id: string;
-  contents: IContents[];
+  contents: IMultipleAnswerType[];
 }
 
 function RadioInput({ id, contents }: IRadioInputProps) {
   const [selectedValue, setSelectedValue] = useState('');
   const dispatch = useAppDispatch();
-  const { etcTextFieldValue, handleEtcTextFieldChange } = useEtcAnswerInput({
-    id,
-  });
 
   const handleRadioInput = (e: React.ChangeEvent<HTMLInputElement>) => {
     setSelectedValue(e.target.value);
@@ -39,13 +35,10 @@ function RadioInput({ id, contents }: IRadioInputProps) {
             key={content.id}
             value={content.id}
             control={<Radio />}
+            checked={content.isChecked}
             label={
               content.isEtc ? (
-                <EtcInput
-                  textFieldValue={etcTextFieldValue}
-                  handleEtcTextFieldChange={handleEtcTextFieldChange}
-                  contentId={content.id}
-                />
+                <EtcInput answerId={id} contentId={content.id} />
               ) : (
                 content.text
               )

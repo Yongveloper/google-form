@@ -25,12 +25,12 @@ function Result() {
         <ResultCard key={answer.id}>
           <Typography variant="h6" sx={{ mb: '8px' }}>
             {answer.title}
-            {answer.isRequired && (
-              <Typography variant="subtitle2" color="red">
-                * 필수 응답
-              </Typography>
-            )}
           </Typography>
+          {answer.isRequired && (
+            <Typography variant="subtitle2" color="red">
+              * 필수 응답
+            </Typography>
+          )}
           {typeof answer.answers === 'string' && (
             <Typography variant="subtitle2">{answer.answers}</Typography>
           )}

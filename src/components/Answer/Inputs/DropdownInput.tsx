@@ -1,23 +1,26 @@
-import { useState } from 'react';
 import FormControl from '@mui/material/FormControl';
-import { IContents } from '@store/types';
+import { IMultipleAnswerType } from '@store/types';
 import Select, { SelectChangeEvent } from '@mui/material/Select';
 import MenuItem from '@mui/material/MenuItem';
 import { useAppDispatch } from '@hooks/useAppDispatch';
 import { setSingleInputSelectionAnswer } from '@store/slices/answerSlice';
 import Divider from '@mui/material/Divider';
+import { useAppSelector } from '@hooks/useAppSelector';
 interface IDropdownInputProps {
   id: string;
-  contents: IContents[];
+  contents: IMultipleAnswerType[];
 }
 
 function DropdownInput({ id, contents }: IDropdownInputProps) {
-  const [selectedValue, setSelectedValue] = useState('선택');
+  const answer = useAppSelector(
+    (state) => state.answer.find((answer) => answer.id === id)?.answers
+  ) as IMultipleAnswerType[];
+  const checkedAnswer = answer.find((answer) => answer.isChecked);
+
   const dispatch = useAppDispatch();
 
   const handleDropdownInput = (event: SelectChangeEvent) => {
     const { value } = event.target;
-    setSelectedValue(value);
     dispatch(setSingleInputSelectionAnswer({ id, contentId: value }));
   };
 
@@ -26,7 +29,7 @@ function DropdownInput({ id, contents }: IDropdownInputProps) {
       <Select
         labelId="demo-simple-select-label"
         id="demo-simple-select"
-        value={selectedValue}
+        value={checkedAnswer?.id ?? '선택'}
         onChange={handleDropdownInput}
       >
         <MenuItem value="선택" disabled>

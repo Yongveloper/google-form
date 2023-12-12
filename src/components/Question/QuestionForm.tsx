@@ -98,7 +98,7 @@ function QuestionForm({ index, question }: QuestionFormProps) {
         addInputItem({
           id,
           contentId: String(Date.now()),
-          text: `기타..`,
+          text: '',
           isEtc: true,
         })
       );

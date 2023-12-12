@@ -1,5 +1,8 @@
 import styled from 'styled-components';
 import TextField from '@mui/material/TextField';
+import { useAppSelector } from '@hooks/useAppSelector';
+import { IMultipleAnswerType } from '@store/types';
+import { useEtcAnswerInput } from '@hooks/useEtcAnswerInput';
 
 const EtcInputContainer = styled.div`
   display: flex;
@@ -12,19 +15,20 @@ const EtcInputContainer = styled.div`
 `;
 
 interface IEtcInputProps {
-  textFieldValue: string;
-  handleEtcTextFieldChange: (
-    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
-    contentId: string
-  ) => void;
+  answerId: string;
   contentId: string;
 }
 
-function EtcInput({
-  textFieldValue,
-  handleEtcTextFieldChange,
-  contentId,
-}: IEtcInputProps) {
+function EtcInput({ answerId, contentId }: IEtcInputProps) {
+  const { handleEtcTextFieldChange } = useEtcAnswerInput({
+    id: answerId,
+  });
+
+  const answer = useAppSelector(
+    (state) => state.answer.find((answer) => answer.id === answerId)?.answers
+  ) as IMultipleAnswerType[];
+  const etcAnswerValue = answer?.find((answer) => answer.isEtc)?.text;
+
   return (
     <EtcInputContainer>
       <span>기타:</span>
@@ -33,7 +37,7 @@ function EtcInput({
         id="standard-search"
         type="search"
         variant="standard"
-        value={textFieldValue}
+        value={etcAnswerValue}
         onChange={(e) => handleEtcTextFieldChange(e, contentId)}
       />
     </EtcInputContainer>

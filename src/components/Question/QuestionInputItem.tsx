@@ -87,7 +87,7 @@ function QuestionInputItem({
                 type="text"
                 variant="standard"
                 placeholder="기타.."
-                value="기타.."
+                value=""
                 disabled={true}
               />
             ) : (

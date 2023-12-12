@@ -2,7 +2,7 @@ import React from 'react';
 import styled from 'styled-components';
 import Typography from '@mui/material/Typography';
 import AnswerFormContainer from './AnswerFormContainer';
-import { IContents } from '@store/types';
+import { IMultipleAnswerType } from '@store/types';
 import { inputType as InputTypeAlias } from '@store/types';
 import RadioInput from './Inputs/RadioInput';
 import CheckboxInput from './Inputs/CheckboxInput';
@@ -20,7 +20,7 @@ interface IAnswerFormItemProps {
   title: string;
   inputType: string;
   isRequired: boolean;
-  contents: string | IContents[];
+  answers: string | IMultipleAnswerType[];
 }
 
 function AnswerFormItem({
@@ -28,7 +28,7 @@ function AnswerFormItem({
   title,
   inputType,
   isRequired,
-  contents,
+  answers,
 }: IAnswerFormItemProps) {
   return (
     <AnswerFormContainer id={id}>
@@ -52,13 +52,13 @@ function AnswerFormItem({
         <AnswerTextFieldInput id={id} width="80%" placeholder="장문형" />
       )}
       {inputType === InputTypeAlias.radio && (
-        <RadioInput id={id} contents={contents as IContents[]} />
+        <RadioInput id={id} contents={answers as IMultipleAnswerType[]} />
       )}
       {inputType === InputTypeAlias.checkbox && (
-        <CheckboxInput id={id} contents={contents as IContents[]} />
+        <CheckboxInput id={id} contents={answers as IMultipleAnswerType[]} />
       )}
       {inputType === InputTypeAlias.dropdown && (
-        <DropdownInput id={id} contents={contents as IContents[]} />
+        <DropdownInput id={id} contents={answers as IMultipleAnswerType[]} />
       )}
     </AnswerFormContainer>
   );
